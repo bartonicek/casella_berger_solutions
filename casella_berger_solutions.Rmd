@@ -1,0 +1,551 @@
+---
+title: "Soultions to Exercises from Casella & Berger"
+author: "Adam Bartonicek"
+date: "Last updated: `r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Chaper 2: Transformations and expectations
+
+## 2.1 
+
+In each of the following, find the pdf of $Y$ and show that it integrates to 1:
+
+### (a)
+
+$$Y = X^3 \qquad f_X(x) = 42x^5 (1 - x) \qquad 0 < x < 1$$
+$$y = y(x) = x^3$$
+$$\implies x = x(y) = y^{\frac{1}{3}}$$
+$$\Bigg\lvert \frac{\partial x}{\partial y} \Bigg\lvert = \Bigg\lvert \frac{1}{3} y^{-\frac{2}{3}} \Bigg\lvert$$
+
+$$f_Y(y) = 42y^{\frac{5}{3}} (1 - y^{\frac{1}{3}}) \cdot \frac{1}{3}y^{-\frac{2}{3}} = 14y(1 - y^{\frac{1}{3}}) \qquad \text{for } 0 < y < 1$$
+
+$$\int_0^1 14 y (1 - y^{\frac{1}{3}} ) dy = 14 \int_0^1 y - y^{\frac{4}{3}} dy = 14 \bigg[ \frac{y^2}{2} - \frac{3y^{\frac{7}{3}}}{7} \bigg]_0^1 = 14 \bigg( \frac{1}{2} - \frac{3}{7} \bigg) = \frac{14}{14} = 1$$
+
+### (b)
+
+$$Y = 4X + 3 \qquad f_X(x) = 7e^{-7x} \qquad 0 < x < \infty$$
+$$y = y(x) = 4x + 3$$
+$$\implies x = x(y) = \frac{y - 3}{4}$$
+$$\Bigg\lvert \frac{\partial x}{\partial y} \Bigg\lvert = \Bigg\lvert \frac{1}{4} \Bigg\lvert$$
+
+$$f_Y(y) = \frac{7}{4}e^{-\frac{7(y - 3)}{4}} \qquad \text{for } 3 < y < \infty$$
+
+$$\int_3^\infty \frac{7}{4} e^{-\frac{7(y - 3)}{4}} dy = \frac{7}{4} \int_3^\infty e^{-\frac{7(y - 3)}{4}} dy = \frac{7}{4} \bigg[ - \frac{4e^{\frac{7(y-3)}{4}}}{7} \bigg]_3^\infty = \frac{7}{4} \bigg( 0 - \bigg( - \frac{4}{7} \bigg) \bigg) = 1$$
+
+### (c)
+
+$$Y = X^2 \qquad f_X(x) = 30x^2(1 - x^2) \qquad 0 < x < 1$$
+$$y = y(x) = x^2$$
+$$\implies x = x(y) = \sqrt{y} \qquad \text{(since } x \text{ is positive only)}$$
+$$\Bigg\lvert \frac{\partial x}{\partial y} \Bigg\lvert = \Bigg\lvert \frac{1}{2 \sqrt{y}} \Bigg\lvert$$
+
+$$f_Y(y) = 30y(1 - \sqrt{y})^2 \cdot \frac{1}{2 \sqrt{y}} = 15\sqrt{y}(1 - \sqrt{y})^2 \qquad \text{for } 0 < y < 1$$
+
+$$\int_0^1 15\sqrt{y}(1 - \sqrt{y})^2 dy = 15 \int_0^1 \sqrt{y} - 2y + y^{\frac{3}{2}} dy = 15 \bigg[ \frac{2y^{\frac{3}{2}}}{3} - y^2 + \frac{2y^{\frac{5}{2}}}{5} \bigg]_0^1 = 15 \bigg( \frac{2}{3} - 1 + \frac{2}{5} \bigg) = 10 - 15 + 6 = 1$$
+
+## 2.2
+
+In each of the following, find the pdf of $Y$:
+
+### (a)
+
+$$Y = X^2 \qquad \text{ and } \qquad f_X(x) = 1, \qquad 0 < x < 1$$
+$$y = y(x) = x^2$$
+$$x = x(y) = \sqrt{y} \qquad \text{(since } x > 0)$$
+$$\Bigg\lvert \frac{\partial x}{\partial y} \Bigg\lvert = \Bigg\lvert \frac{1}{2 \sqrt{y}} \Bigg\lvert$$
+
+$$f_Y(y) = \frac{1}{2 \sqrt{y}}, \qquad 0 < y < 1$$
+
+### (b)
+
+$$Y = -\log(X) \qquad f_X(x) = \frac{(n + m + 1)!}{n!m!} x^n (1 - x)^m, \qquad 0 < x < 1$$
+$$y = y(x) - log(x)$$
+$$x = x(y) = e^{-y}$$
+$$\Bigg\lvert \frac{\partial x}{\partial y} \Bigg\lvert = \Bigg\lvert -e^{-y} \Bigg\lvert$$
+$$f_Y(y) = \frac{(n + m + 1)!}{n!m!} e^{-ny} (1 - e^{-y})^m e^{-y} = \frac{(n + m + 1)!}{n!m!} e^{-n(n + 1)y}(1 - e^{-y})^m \qquad 0 < y < \infty$$
+
+### (c)
+
+$$Y = e^X \qquad f_X(x) = \frac{1}{\sigma^2} xe^{-(x/\sigma)^2 / 2}$$
+$$y = y(x) = e^x$$
+$$x = x(y) = \log(y)$$
+$$\Bigg\lvert \frac{\partial x}{\partial y} \Bigg\lvert = \frac{1}{y}$$
+
+$$f_Y(y) = \frac{1}{\sigma^2} \log(y)e^{-(\log(y)/\sigma)^2 / 2} \cdot \frac{1}{y} = \frac{1}{\sigma^2} \log(y) e^{-(\log(y) / \sigma^2) / 2} \qquad 0 < y < \infty$$
+
+## 2.3
+
+Suppose $X$ has a geometric pmg $f_X(x) = \frac{1}{3} \bigg( \frac{2}{3} \bigg)^x, \qquad x = 0, 1, 2, \ldots$. Determine the distribution of $Y = X / (X + 1)$
+
+$$y = y(x) = x/(x + 1)$$
+$$x = x(y) = y/(1 - y)$$
+Since $Y$ is a discrete random variable (same as $X$), we do not need to calculate a Jacobian of the transformation (each transformed outcome has the same probability as its corresponding untransformed outcome). 
+
+$$f_Y(y) = \frac{1}{3} \bigg( \frac{2}{3} \bigg)^{\frac{y}{1- y}}$$
+
+## 2.4
+
+Let $\lambda$ be a fixed constant and define $f_X(x) = \frac{1}{2} \lambda e^{-\lambda x}$ if $x \geq 0$ and $f_X(x) = \frac{1}{2} \lambda e^{\lambdax}$ if $x < 0$.
+
+### (a)
+
+Verify that $f_X(x)$ is a pdf:
+
+In both cases, the function $f_X(x)$ returns a non-negative number (density). Now:
+
+$$\int f_X(x) = \frac{\lambda}{2} \int_0^\infty e^{-\lambda x} dx + \frac{\lambda}{2} \int_{-\infty}^0 e^{\lambda x} dx$$
+$$= \frac{\lambda}{2} \bigg[- \frac{e^{-\lambda x}}{\lambda} \bigg]_0^\infty + \frac{\lambda}{2} \bigg[ \frac{e^{\lambda x}}{\lambda} \bigg]_{-\infty}^0 = \frac{1}{2} + \frac{1}{2} = 1$$
+
+Hence $f_X(x)$ is a valid pdf.
+
+### (b)
+
+If $X$ is a random variable given by $f_X(x)$, find $P(X < t)$ for all $t$. Evaluate all intergrals.
+
+$$P(X < t) = \begin{cases} \frac{\lambda}{2} \int_{-\infty}^t e^{-\lambda x} dx & \text{if } t < 0 \\ \frac{1}{2} + \frac{\lambda}{2} \int_{0}^t e^{\lambda x} dx & \text{if } t \geq 0  \end{cases}$$
+$$ \frac{\lambda}{2} \int_{\infty}^t e^{\lambda x} = \frac{\lambda}{2} \bigg[\frac{e^{\lambda x}}{\lambda} \bigg]_{-\infty}^t = \frac{\lambda}{2} \bigg(\frac{e^{-\lambda t)} - 0}{\lambda} \bigg) = \frac{e^{\lambda t}}{2}$$
+$$ \frac{\lambda}{2} \int_{0}^t e^{-\lambda x} = \frac{\lambda}{2} \bigg[ -\frac{e^{-\lambda x}}{\lambda} \bigg]_{0}^t = \frac{\lambda}{2} \bigg(\frac{1 -e^{-\lambda t)}}{\lambda} \bigg) = \frac{1 - e^{-\lambda t}}{2}$$
+
+$$P(X < t) = \begin{cases} \frac{e^{\lambda t}}{2} & \text{if } t < 0 \\ \frac{1}{2} + \frac{1 - e^{-\lambda t}}{2} & \text{if } t \geq 0  \end{cases}$$
+
+## 2.5
+
+Let $Y = \sin^2(x)$, and $f_X(x) = \frac{1}{2 \pi}$ for $0 < x < 2 \pi$. Find the pdf of $Y$.
+
+```{r}
+
+x <- seq(0, 2 * pi, 0.01)
+y <- sin(x) * sin(x)
+
+plot(x, y, type = 'l', col = 'steelblue', axes = FALSE)
+axis(1, tick = FALSE, at = pi * c(0, 1/2, 1, 3/2, 2), 
+     labels = round(pi * c(0, 1/2, 1, 3/2, 2), 2))
+box(bty = 'L', col = 'grey60')
+
+```
+
+The function is monotone in regions: $(0, \pi/2), (\pi/2, \pi), (\pi, 3/2 \pi), (3/2 \pi, 2 \pi)$.
+
+The inverses will be: $g_1(y) = \sin^{-1}( \sqrt{y})$, $g_2(y) = \pi - \sin^{-1}( \sqrt{y})$, $g_3(y) = \pi + \sin^{-1}( \sqrt{y})$, $g_4(y) = 2 \pi - \sin^{-1}( \sqrt{y})$. Their Jacobians will be $\frac{1}{2\sqrt{y}} \frac{1}{\sqrt{1 - y}}$ (the only thing that differs in the derivative inverses is the sign, so the Jacobians are the same), so the pdf ends up being:
+
+$$f_Y(y) = 4 \cdot \frac{1}{2 \pi} \frac{1}{2\sqrt{y}} \frac{1}{\sqrt{1 - y}} = \frac{1}{\pi \sqrt{y} \sqrt{1 - y}} \qquad 0 \leq y \leq 1$$
+
+
+## 2.6
+
+In each of the following find the pdf of $Y$ and shw that it integrates to 1.
+
+### (a)
+
+$$f_X(x) = \frac{1}{2}e^{- \lvert x \lvert}, \qquad -\infty < x < \infty; \qquad Y = \lvert X \lvert^3$$
+$$y = y(x) = \lvert x \lvert ^{1/3}$$
+$$x = x(y) = \pm y^{1/3}$$
+$$\Bigg\lvert \frac{\partial x}{\partial y} \Bigg\lvert = \Bigg\lvert \pm \frac{1}{3}y^{-2/3} \Bigg\lvert = \frac{1}{3}y^{-2/3}$$
+$$f_Y(y) = \frac{1}{2}e^{-\lvert y^{1/3} \lvert} \cdot \frac{1}{3}y^{-2/3} + \frac{1}{2}e^{-\lvert y^{1/3} \lvert} \cdot \frac{1}{3}y^{-2/3}$$
+$$= \frac{1}{3}y^{-2/3}e^{-y^{1/3}} \qquad 0 < y < \infty$$
+
+$$\int_0^\infty \frac{1}{3}y^{-2/3} e^{-y^{1/3}} dy$$
+
+Let $z = y^{\frac{1}{3}}$, $y = z^3$, $dy = 3 z^2 dz$:
+
+$$\frac{1}{3} \int_0^\infty z^{-2} e^{-z} \cdot 3 z^2 dz = \frac{1}{3} \int_0^\infty 3 e^{-z} dz = \frac{1}{3} \cdot 3 \cdot \Gamma(1) = 1$$
+
+### (b)
+
+$$f_X(x) = \frac{3}{8}(x + 1)^2, \qquad -1 < x < 1; \qquad Y = 1 - X^2$$
+$$y = y(x) = 1 - x^2$$
+$$x = x(y) = \pm \sqrt{1 - y}$$
+$$\Bigg \lvert \frac{\partial x}{\partial y} \Bigg \lvert = \Bigg \lvert -\frac{1}{2 \sqrt{1 - y}} \Bigg \lvert = \frac{1}{2 \sqrt{1 - y}}$$
+$$f_Y(y) = \frac{3}{8}[-\sqrt{1 - y} + 1]^2 \cdot \frac{1}{2 \sqrt{1 - y}} + \frac{3}{8}[\sqrt{1 - y} + 1] \cdot \frac{1}{2 \sqrt{1 - y}} $$
+$$= \frac{3}{8} \frac{1 - y - 2\sqrt{1 - y} + 1}{2\sqrt{1 - y}} + \frac{3}{8} \frac{1 - y + 2\sqrt{1 - y} + 1}{2\sqrt{1 - y}} = \frac{3}{8} \frac{2 - y}{\sqrt{1 - y}}$$
+$$= \frac{3}{8} \frac{1}{\sqrt{1 - y}} + \frac{3}{8} \sqrt{1 - y}, \qquad 0 < y < 1$$
+
+$$\int_0^1 \frac{3}{8}  \frac{1}{\sqrt{1 - y}} + \frac{3}{8} \sqrt{1 - y} \; dy = \frac{3}{8} \bigg[ \int_0^1 \frac{1}{\sqrt{1 - y}} dy + \int_0^1 \sqrt{1 - y} \; dy  \bigg]$$
+$$= \frac{3}{8} \Bigg[ -2 \bigg[ \sqrt{1-y} \bigg]_0^1 - \frac{2}{3} \bigg[ (1 - y)^{3/2} \bigg]_0^1 \Bigg]$$
+$$= \frac{3}{8} \Bigg[ -2 (0 - 1) - \frac{2}{3}(0 - 1) \Bigg] = \frac{3}{8} \cdot \frac{8}{3} = 1$$
+
+### (c)
+
+$$f_X(x) = \frac{3}{8})(x + 1)^2, \qquad -1 < x < 1; \qquad Y = 1 - X^2 \; \text{ if } X \leq 0, \qquad Y = 1 - X \; \text{ if } X > 0$$
+$$y = y(x) = \begin{cases} 1 - x^2 & \text{if } x \leq 0 \\ 1 - x & \text{if } x > 0  \end{cases} $$
+$$x = x(y) = \begin{cases} -\sqrt{1 - y} \\ 1 - y  \end{cases}$$
+$$\Bigg \lvert \frac{\partial x}{\partial y} \Bigg \lvert = \begin{cases} \frac{1}{2 \sqrt{1 - y}} \\ 1 \end{cases}$$
+$$f_Y(y) = \frac{3}{8}(-\sqrt{1 - y} + 1)^2 \cdot \frac{1}{2 \sqrt{1 - y}} + \frac{3}{8}(1 - y + 1) \cdot 1$$
+$$= \frac{3}{16} \frac{2 - y - 2 \sqrt{1 - y}}{\sqrt{1 - y}} + \frac{3}{8} (2 - y)^2 \qquad 0 < y < 1$$
+
+## 2.7
+
+Let $X$ have pdf $f_X(x) = \frac{2}{9}(x + 1), \qquad -1 \leq x \leq 2$
+
+### (a)
+
+Find the pdf of $Y = X^2$ (theorem 2.1.8 is not directly applicable):
+
+$$P(Y \leq y) = P(X^2 \leq y) = \begin{cases} P(-\sqrt{y} \leq X \sqrt{y}) & \text{if } \lvert x \lvert \leq 1 \\  P(1 \leq X \leq \sqrt{y}) & \text{if } x \geq 1 \end{cases}$$
+$$= \begin{cases} \int_{-\sqrt{y}}^{\sqrt{y}} f_X(x)dx & \text{if } \lvert x \lvert \leq 1 \\ \int_1^{\sqrt{y}} f_X(x) dx & \text{if } x \geq 1  \end{cases}$$
+$$\int f_X(x) dx = \frac{2}{9} \int (x + 1) dx = \frac{2}{9} \bigg[ \frac{x^2}{2} + x \bigg]$$
+
+$$\implies F_Y(y) = \begin{cases} \frac{2}{9} \bigg[ \frac{x^2}{2} + x \bigg]_{-\sqrt{y}}^{\sqrt{y}} & \text{if } y \leq 1 \\ \frac{2}{9} \bigg[ \frac{x^2}{2} + x \bigg]_{1}^{\sqrt{y}} & \text{if } y \geq 1  \ \end{cases}$$
+$$= \begin{cases} \frac{4}{9} \sqrt{y} & \text{if } y \leq 1 \\ \frac{2}{9} \frac{y-3}{2} + \frac{2}{9} \sqrt{y} \qquad \text{if } y \geq 1  \end{cases}$$
+
+Differentiate:
+
+$$f_X(x) = \begin{cases} \frac{2}{9} \frac{1}{\sqrt{y}} & \text{if } y \leq 1 \\ \frac{1}{9} + \frac{1}{9} \frac{1}{\sqrt{y}} & \text{if } y \geq 1  \end{cases}$$
+
+### (b)
+
+If sets $B_1, B_2, \ldots B_K$ are partitions of the range of $Y$, we can write:
+
+$$f_Y(y) = \sum_k f_Y(y) I(y \in B_k) $$
+and then we can apply theorem 2.1.8 to each of the pieces $B_k$ and add them up. 
+
+## 2.8
+
+In each of the following show that the given function is a cdf and find $F^{-1}_X(y)$:
+
+### (a)
+
+$$F_X(x) = \begin{cases} 0 & \text{if } x < 0 \\ 1 - e^{-x} & \text{if } x \geq 0 \end{cases}$$
+
+$$\lim_{x \to 0} 1-e^{-x} = 0 \qquad \lim_{x \to \infty} 1 - e^{-x} = 1$$
+
+$F_X(x)$ is increasing in $x$, continuous.
+
+$$F_X^{-1}(y) = -\log(1 - y)$$
+
+### (b)
+
+$$F_X(x) = \begin{cases} e^{x}/2 & \text{if } x < 0 \\ 1/2 & \text{if } 0 \leq x \leq 1 \\ 1 - e^{(1 - x)}/2 & \text{if } 1 \leq x \end{cases}$$
+
+$$\lim_{x \to -\infty} e^x / 2 = 0 \qquad \lim_{x \to \infty} 1 - e^{1 - x}/2 = 1$$
+
+$e^x/2$ is increasing in $x$, $\frac{1}{2}$ is non-decreasing, $1 - e^{1 - x} / 2$ is increasing in $x$.
+
+$$F_X^{-1}(y) = \begin{cases} \log(2y) & \text{if } y \leq 1/2 \\ 1 - \log(2(1 - y)) & \text{if } y > 1/2 \end{cases}$$
+
+### (c)
+
+$$F_X(x) = \begin{cases} e^x / 4 & \text{if } x < 0 \\ 1 - (e^{-x} / 4) & \text{if } x \geq 0 \end{cases}$$
+
+$$\lim_{x \to -\infty} e^x/4 = 0 \qquad \lim_{x \to \infty} 1 - (e^{-x} / 4) = 1$$
+
+$F_X(x)$ is increasing in $x$.
+
+$$F_X^{-1}(y) = \begin{cases} \log(4y) & \text{if } y \leq 1/4 \\ -\log(4(1 - y)) & \text{if } y > 1/4 \end{cases}$$
+
+## 2.9
+
+$X$ has a pdf:
+
+$$f_X(x) = \begin{cases} \frac{x-1}{2} & \text{if } 1 < x < 3 \\ 0 & \text{otherwise} \end{cases}$$
+
+Find a monotone function $u(x)$ such that $Y = u(x)$ has a $\text{Uniform}(0, 1)$ distribution.
+
+If $u(x) = F_x(x)$ then $F_X(x) \sim \text{Uniform}(0, 1)$. Thus:
+
+$$\implies y = y(x) = \int_1^x \frac{z - 1}{2} dz = \frac{1}{2} \bigg[ \frac{z^2}{2} - z \bigg]_1^x = \frac{1}{2} \bigg( \frac{x^2}{2} - x - \frac{1}{2} + 1 \bigg)$$
+$$= \frac{1}{2} \bigg( \frac{x^2 - 2x + 1}{2} \bigg) = \frac{(x - 1)^2}{4}$$
+
+Now:
+
+$$y = y(x) = \frac{(x-1)^2}{4}$$
+$$x = x(y) = \sqrt{4y} + 1$$
+$$\Bigg \lvert \frac{\partial x}{\partial y} \Bigg \lvert = \frac{2}{\sqrt{4y}}$$
+$$f_Y(y) = \frac{\sqrt{4y} + 1 - 1}{2} \cdot \frac{2}{\sqrt{4y}} = \frac{\sqrt{4y}}{\sqrt{4y}} = 1$$
+
+## 2.10
+
+Let $X$ be a discrete random variable with cdf $F_X(x)$ and define a random variable $Y$ as $Y = F_X(x)$
+
+### (a)
+
+Prove that $Y$ is stochastically greater than $\text{Uniform}(0, 1)$; that is, if $U \sim \text{Uniform}(0, 1)$, then:
+
+$$P(Y > y) \geq P(U \geq y) = 1 - y \qquad \text{for all y}, 0 < y < 1$$
+$$P(Y > y) > P(U > y) = 1 - y \qquad \text{for some y}, 0 < y < 1$$
+DO SOME OTHER TIME
+
+## 2.11
+
+Let $X$ have the standard normal pdf, $f_X(x) = \frac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}}$
+
+### (a)
+
+Find $E(X^2)$ directly, and then by using the pdf of $Y = X^2$ and calculating $E(Y)$.
+
+$$E(X^2) = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^\infty x^2  e^{-\frac{x^2}{2}} dx$$
+
+Let $u = x, u' = 1, v = -\frac{e^{-\frac{x^2}{2}}}{2}, v' = xe^{-\frac{x^2}{2}}$
+
+$$= \frac{1}{\sqrt{2 \pi}} \Bigg[ \bigg[ -xe^{-\frac{x^2}{2}} \bigg]_{-\infty}^{\infty} + \int_{-\infty}^{\infty} e^{-\frac{x^2}{2}} dz \Bigg]$$
+$$= \frac{1}{\sqrt{2 \pi}} \bigg( 0 + \sqrt{2 \pi } \bigg)$$
+$$= \frac{\sqrt{2 \pi}}{\sqrt{2 \pi}} = 1$$
+
+We know that if $X \sim \text{N}(0, 1)$ and $Y = X^2$, then $Y \sim \chi^2_1$, $f_Y(y) = \frac{1}{\sqrt{2 \pi y}} e^{-\frac{y}{2}}$ for $0 < y < \infty$.
+
+Then:
+
+$$E(Y) = \int_0^\infty y \frac{1}{\sqrt{2 \pi y} } e^{-\frac{y}{2}} = \frac{1}{\sqrt{2 \pi}} \int_{0}^\infty y^{\frac{1}{2}}e^{-\frac{y}{2}} dy$$
+
+Let $z = \frac{y}{2}$, $y = 2z$, $dy = 2 dz$:
+
+$$= \frac{1}{\sqrt{2 \pi}} \int_{0}^\infty (2z)^{\frac{1}{2}}e^{-z} 2dz = \frac{2}{\sqrt{\pi}} \int_0^\infty z^{\frac{1}{2}}e^{-z} dz = \frac{2}{\sqrt{\pi}} \Gamma \bigg( \frac{1}{2} \bigg) = 1$$
+
+(we could also note that the expectation of $\chi^2_k$ is $k$)
+
+### (b)
+
+Find the pdf of $Y = \lvert X \lvert$, and its mean and variance.
+
+$$F_y(y) = P(Y \leq y) = P( \lvert X \lvert \leq y) = P(-y \leq X \leq y)$$
+$$P(X \leq y) - P(X \leq - y) = F_X(y) - F_X(-y)$$
+$$\implies F_Y(y) = \frac{\partial}{\partial y} F_X(y) - F_X(-y) = f_X(y) + f_X(-y) = \frac{1}{\sqrt{2 \pi}}e^{-\frac{y^2}{2}} + \frac{1}{\sqrt{2 \pi}}e^{-\frac{y^2}{2}} = \sqrt{\frac{2}{\pi}} e^{-\frac{y^2}{2}}$$
+
+(there's a typo in the texbook: $\sqrt{\frac{2}{\pi}} e^{-\frac{y}{2}}$ instead of $\sqrt{\frac{2}{\pi}} e^{-\frac{y^2}{2}}$)
+
+$$E(Y) = \sqrt{\frac{2}{\pi}} \int_0^{\infty} ye^{-\frac{y^2}{2}} dy$$
+
+Let $z = \frac{y^2}{2}$, $y = \sqrt{2z}$, $dy = \frac{1}{\sqrt{2z}}$:
+
+$$= \sqrt{\frac{2}{\pi}} \int_0^{\infty} \sqrt{2z} e^{-z} \cdot \frac{1}{\sqrt{2z}} dz = \sqrt{\frac{2}{\pi}} \int_0^\infty e^{-z} dz = \sqrt{\frac{2}{\pi}}$$
+
+$$E(Y^2) = \sqrt{\frac{2}{\pi}} \int_0^{\infty} y^2e^{-\frac{y^2}{2}} dy = \sqrt{\frac{2}{\pi}} \int_0^\infty 2ze^{-z} \cdot \frac{1}{\sqrt{2 z}} dz$$
+
+$$\frac{2}{\sqrt{\pi}} \int_0^{\infty} z^{\frac{1}{2}} e^{-z} dz =  \frac{2}{\sqrt{\pi}} \Gamma \bigg( \frac{3}{2} \bigg) = \frac{2}{\sqrt{\pi}} \cdot \frac{\sqrt{\pi}}{2} = 1$$
+
+$$\implies Var(Y) = 1 - \frac{2}{\pi}$$
+
+## 2.12
+
+A random right triangle can be constructed by drawing an angle $X \sim \text{Uniform}(0, \pi/2)$, and then drawing a line of a distance $d$ such that $X$ is the angle between it and the x-axis. Let $Y$ be the height of the random triangle. Find the distribution and the mean of $Y$.
+
+$$\tan x = \frac{y}{d} \qquad \tan^{-1} \bigg( \frac{y}{d} \bigg) = x \qquad  \frac{\partial}{\partial y} \tan^{-1} \bigg( \frac{y}{d} \bigg) = \frac{1}{1 + (y / d)^2} \cdot \frac{1}{d}$$
+
+Hence:
+
+$$f_Y(y) = f_X(g^{-1}(y)) \Bigg \lvert \frac{\partial x}{\partial y} \Bigg \lvert = \frac{2}{\pi} \cdot \frac{1}{1 + (y / d)^2} \cdot \frac{1}{d} \qquad 0 < y < \infty$$
+
+I.e. a half-Cauchy distribution, with an infinite mean.
+
+## 2.13
+
+Consider a sequence of coin flips, each of which has a probability $p$ of landing heads. Define $X$ as the length of the run of either heads or tails, starting with first trial. Find the distribution of $X$ and $E(X)$
+
+$$f_X(x) = p^x(1-p) + (1-p)^x p$$
+$$E(X) = \sum_{x = 1}^\infty x \bigg[ p^x(1-p) + (1-p)^x p \bigg]$$
+$$= p(1-p) \bigg[ \sum_{x=1}^\infty xp^{x - 1} + \sum_{x = 1}^\infty x(1-p)^{x - 1} \bigg]$$
+$$= p(1-p) \bigg[ \frac{\partial}{\partial p} \sum_{x=1}^\infty p^{x} + \frac{\partial}{\partial p} \sum_{x = 1}^\infty -(1-p)^{x} \bigg]$$
+$$= p(1 - p) \bigg[ \frac{\partial}{\partial p} \bigg( \frac{1}{1 - p} - 1 \bigg) + \frac{\partial}{\partial p} \bigg( -\frac{1}{p} - 1 \bigg) \bigg]$$
+$$= p(1 - p) \bigg[ \frac{\partial}{\partial p} \bigg( \frac{p}{1 - p} \bigg) + \frac{\partial}{\partial p} \bigg( -\frac{1 - p}{p} \bigg) \bigg]$$
+$$= p(1 - p) \bigg[ \frac{(1 - p) + p}{(1 - p)^2} +  -\frac{-  p - (1 - p)}{p^2} \bigg]$$
+$$= \frac{p}{1 - p} + \frac{1 - p}{p}$$
+
+## 2.14
+
+Let $X$ be a continuous, non-negative random variable ($f_X(x) = 0 \text{ for } x < 0)$. Show that:
+
+$$\int_0^\infty [1 - F_X(x)] dx = \int_0^\infty P(X > x) dx$$
+$$= \int_0^\infty \int_x^\infty f_X(y) dy dx$$
+$$= \int_0^\infty \int_0^y dx f_X(y) dy \qquad \text{(changing the order of integration)}$$
+$$= \int_0^\infty y f_X(y) dy = E(X)$$
+
+This is possible by switching the order of integration and changing the limits: the area described by $x \leq y < \infty$ and $0 \leq x < \infty$ (the first set of limits), is the same as $0 \leq x \leq y$ and $0 \leq y \leq \infty$.
+
+```{r, echo = FALSE}
+
+plot(0:10, 0:10, type = 'n', xlab = 'x', ylab = 'y', axes = FALSE, asp = 1)
+polygon(c(0, 10, 0), c(0, 10, 10), col = 'antiquewhite', border = NA)
+text(3, 7, labels = expression({x <= y} < infinity), col = 'steelblue')
+text(3, 6, labels = expression({0 <= x} < y), col = 'firebrick')
+text(5, 0.5, labels = expression({0 <= x} < infinity), col = 'steelblue')
+text(-2, 5, labels = expression({0 <= y} < infinity), col = 'firebrick')
+axis(1, at = c(0, 10), labels = c(0, expression(infinity)), tick = FALSE)
+axis(2, at = 10, labels = expression(infinity), las = 1, tick = FALSE)
+box(bty = 'l', col = 'grey80')
+
+```
+
+### (b)
+
+Let $X$ be a discrete random variable whose range is the non-negative integers. Show that:
+
+$$E(X) = \sum_{x = 0}^\infty (1 - F_X(x))$$
+
+$$\sum_{x = 0}^\infty (1 - F_X(x)) = \sum_{x = 0}^\infty P(X > x)$$
+$$= \sum_{x=0}^\infty \sum_{k = x + 1}^\infty f_X(k)$$ 
+$$= \sum_{k = \infty}^0 \sum_{x = 0}^k f_X(x) \qquad \text{(each } k \text{ gets counted } x = k \text{ times, starting from the end)}$$
+
+$$\sum_{k=0}^\infty k f_X(k) = E(X)$$
+
+## 2.15
+
+Let $X$ and $Y$ be any two random variables and define:
+
+$$X \wedge Y = \min(X, Y) \qquad X \vee Y = \max(X, Y)$$
+Show that: 
+
+$$E(X \wedge Y) = E(X) + E(Y) - E(X \vee Y)$$
+Starting from the assumption that sum of $X$ and $Y$ is equal to the sum of their respective minimum and maximum:
+
+$$E(X + Y) = E(X \wedge Y) + E(X \vee Y)$$
+$$\implies E(X) + E(Y) = E(X \wedge Y) + E(X \vee Y)$$
+$$\implies E(X \vee Y) = E(X) + E(Y) - E(X \wedge Y)$$
+## 2.16
+
+Use the result of Exercise 2.14 to find the mean duration of certain telephone calls, where we assume that the duration, $T$, of a particular call can be described probabilistically by $P(T > t) = ae^{-\lambda t} + (1 - a)e^{-\mu t}$, where $0 < a < 1$, $\lambda > 0$, $\mu > 0$.
+
+$$E(T) = \int_0^\infty [1 - F_T(t)] dt = \int_0^\infty ae^{-\lambda t} + (1 - a)e^{-\mu t} dt$$
+$$= a\int_0^\infty e^{-\lambda t} dt + (1- a) \int_0^\infty e^{-\mu t} dt$$
+$$= a \bigg[ - \frac{e^{-\lambda t}}{\lambda} \bigg]_0^\infty + (1 - a) \bigg[ -\frac{e^{-\mu t}}{\mu} \bigg]_0^\infty$$
+$$= \frac{a}{\lambda} + \frac{1 - a}{\mu}$$
+
+## 2.17
+
+A median of a distribution is a value $m$ such that $P(X \leq m) \geq \frac{1}{2}$ and $P(X \geq m) \leq \frac{1}{2}$. Find the median of the following distributions:
+
+### (a)
+
+$$f_X(x) = 3x^2, \qquad 0 < x < 1$$
+$$F_X(x) = \int_0^x 3y^2 dy = 3 \bigg[ \frac{y^3}{3} \bigg]_0^x = x^3 \qquad 0 < x < 1$$
+
+$$F_X(m) = \frac{1}{2}$$
+$$\implies m^3 = \frac{1}{2}$$
+$$\implies m = \sqrt[3]{\frac{1}{2}} \approx 0.79$$
+
+### (b)
+
+$$f_X(x) = \frac{1}{\pi (1 + x^2)}, \qquad -\infty < x < \infty$$
+
+The pdf is symmetric around 0, so the median will be 0, as long as the function is a valid pdf. Check if integrates to 1:
+
+$$\frac{1}{\pi} \int_{-\infty}^\infty \frac{1}{1 + x^2} dx = \frac{1}{\pi} \bigg[ \tan^{-1}(x) \bigg]_{-\infty}^\infty = \frac{1}{\pi} \bigg( \frac{\pi}{2} - \bigg(- \frac{\pi}{2} \bigg) \bigg) = 1$$
+
+## 2.18
+
+Show that if $X$ is a continuous R.V., then $\text{min}_a E \lvert X - a \lvert = E \lvert X - m \lvert$
+
+where $m$ is the median of $X$.
+
+$$E(\lvert X - a \lvert ) = \int_{-\infty}^a -(x - a) f_X(x) dx + \int_{a}^\infty (x - a) f_X(x) dx$$
+$$\frac{\partial}{\partial a} \int_{-\infty}^a -(x - a) f_X(x) dx + \int_{a}^\infty (x - a) f_X(x) dx = \int_{-\infty }^a f_X(x) dx - \int_{a}^\infty f_X(x) dx$$
+$$\implies \text{Minimized if } \int_{-\infty }^a f_X(x) dx = \int_{a}^\infty f_X(x) dx$$
+$$\implies a \text{ is the median}$$
+
+## 2.19
+
+Prove that $\frac{\partial}{\partial a} E(X - a)^2 = 0 \iff E(X) = a$
+
+$$E(X - a)^2 = \int_{-\infty}^\infty (x - a)^2 f_X(x) dx$$
+
+$$\frac{\partial}{\partial a} \int_{-\infty}^\infty (x - a)^2 f_X(x) dx = \int_{-\infty}^\infty (x - a)^2 f_X(x) dx$$
+$$= -\int_{-\infty}^\infty 2x f_X(x)dx + \int_{-\infty}^\infty 2a f_X(x) dx$$
+$$= -2 E (X) + 2a \int_{-\infty}^\infty f_X(x) dx = -2 E (X) + 2a$$
+$$\implies \text{Will be zero iff } a = E(X)$$
+
+## 2.20
+
+A couple decides to continue having children until a daughter is born. What are the expected number of children of this couple?
+
+$$E(X) = 1 + \sum_{k = 0}^\infty k(1 - p) p^k$$
+$$= 1 + (1 - p)  \sum_{k = 0}^\infty k p^k$$
+$$= 1 + (1 - p)p  \sum_{k = 0}^\infty k p^{k-1}$$
+$$= 1 + (1 - p)p \frac{\partial}{\partial p}  \sum_{k = 0}^\infty p^{k}$$
+$$= 1 + (1 - p)p  \frac{\partial}{\partial p} \frac{1}{1 - p}$$
+$$= 1 + (1 - p) p \cdot \frac{1}{(1 - p)^2} = 1 + \frac{p}{1 - p} = \frac{1 - p + p}{1 - p} = \frac{1}{1 - p}$$
+
+If we assume the probability of daughter born $= \frac{1}{2}$, then $E(X) = 2$
+
+## 2.21
+
+Prove the "two-way" rule for expectations: $E(g(X)) = E(Y)$ where $Y = g(X)$. Assume $g(x)$ is a monotone function.
+
+$$E(g(X)) = \int_{-\infty}^\infty g(x) f_X(x) dx$$
+$$E(Y) = \int_{-\infty}^\infty y f_Y(y) dy = \int_{-\infty}^\infty g(x) f_X(g^{-1}(y)) \frac{dx}{dy} dy = \int_{-\infty}^\infty g(x) f_X(x) dx$$
+
+## 2.22
+
+Let $X$ have pdf:
+
+$$f_X(x) = \frac{4}{\beta^3 \sqrt{\pi}} x^2 e^{-x^2 / \beta^2} \qquad 0 < x < \infty, \qquad \beta > 0$$
+
+### (a) 
+
+Verify that $f_X(x)$ is a pdf:
+
+$$\int_0^\infty \frac{4}{\beta^3 \sqrt{\pi}} x^2 e^{-x^2 / \beta^2} dx = \frac{4}{\beta^3 \sqrt{\pi}} \int_0^\infty x^2 e^{-x^2 / \beta^2} dx$$
+
+Let $z = \frac{x^2}{\beta^2}$:
+
+$$x = \sqrt{\beta^2 z} \qquad \text{(since } x \text{ is positive)}$$
+$$dx = \frac{\beta}{2 \sqrt{z}} dz$$
+
+$$\implies \frac{4}{\beta^3 \sqrt{\pi}} \int_0^\infty \beta^2 z e^{-z} \frac{\beta}{2 \sqrt{z}} dz = \frac{2}{\sqrt{\pi}} \int_0^\infty z^{\frac{1}{2}}e^{-z}$$
+$$= \frac{2}{\sqrt{\pi}} \cdot \Gamma \bigg(\frac{3}{2} \bigg) = \frac{2}{\sqrt{\pi}} \cdot \frac{\sqrt{\pi}}{2} = 1$$
+
+### (b)
+
+Find the mean and variance of $X$:
+
+$$E(X) = \int_0^\infty x f_X(x) dx = \frac{4}{\beta^3 \sqrt{\pi}} \int_0^\infty x^3 e^{-x^2 / \beta^2} dx$$
+
+Let $z = \frac{x^2}{\beta^2}$:
+
+$$x = \sqrt{\beta^2 z} \qquad \text{(since } x \text{ is positive)}$$
+$$x^3 = \beta^3 z^{\frac{3}{2}}$$
+$$dx = \frac{\beta}{2 \sqrt{z}} dz$$
+
+$$\implies E(X) = \frac{4}{\beta^3 \sqrt{\pi}} \int_0^\infty  \beta^3 z^{\frac{3}{2}} e^{-z} \frac{\beta}{2 \sqrt{z}} dx$$
+$$= \frac{2 \beta}{\sqrt{\pi}} \cdot \Gamma(2) = \frac{2 \beta}{\sqrt{\pi}}$$
+
+$$\implies E(X^2) = \frac{2 \beta^2}{\sqrt{\pi}} \cdot \Gamma \bigg( \frac{5}{2} \bigg) = \frac{2 \beta^2}{\sqrt{\pi}} \cdot \frac{3 \sqrt{\pi}}{4} = \frac{3 \beta^2}{2}$$
+
+$$Var(X) = E(X^2) - E(X)^2 = \frac{3 \beta^2}{2} - \bigg( \frac{2 \beta}{\sqrt{\pi}} \bigg)^2 = \frac{3 \beta^2}{2} - \frac{4 \beta^2}{\pi} = \frac{\beta^2(3 \pi - 8)}{2 \pi} $$
+
+## 2.23 
+
+Let $X$ have pdf: 
+
+$$f_X(x) = \frac{1}{2} (1 + x) \qquad -1 < x < 1$$
+
+### (a)
+
+Find the pdf of $Y = X^2$:
+
+$$f_Y(y) = f_X(g^{-1}(y)) \Bigg\lvert \frac{dx}{dy} \Bigg\lvert$$
+
+$$y = g(x) = x^2$$
+$$x = g^{-1}(y) = \pm \sqrt{y}$$
+$$dx = \pm \frac{1}{2 \sqrt{y}} dy$$
+$$\Bigg\lvert \frac{dx}{dy} \Bigg\lvert = \frac{1}{2 \sqrt{y}}$$
+
+$$\implies f_Y(y) = \frac{1}{2}(1 - \sqrt{y}) \cdot \frac{1}{2 \sqrt{y}} + \frac{1}{2}(1 + \sqrt{y}) \cdot \frac{1}{2 \sqrt{}y} = \frac{1 - \sqrt{y} + 1 + \sqrt{y}}{4 \sqrt{y}}$$
+$$= \frac{1}{2 \sqrt{y}} \qquad \text{for } 0 < y < 1$$
+
+
+### (b)
+
+Find the mean and variance of $y$:
+
+$$E(Y) = \int_{0}^1 y\frac{1}{2 \sqrt{y}} dy = \frac{1}{2} \int_{0}^1 \sqrt{y} dy = \frac{1}{2} \bigg[ \frac{2y^{\frac{3}{2}}}{3} \bigg]_0^1 = \frac{1}{3}$$
+$$E(Y^2) = \frac{1}{2} \int_0^1 y^{\frac{3}{2}} dy = \frac{1}{2} \bigg[ \frac{2y^{\frac{5}{2}}}{5} \bigg] = \frac{1}{5}$$
+$$Var(Y) = E(Y^2) - E(Y)^2 = \frac{1}{5} - \bigg( \frac{1}{3} \bigg)^2 = \frac{1}{5} - \frac{1}{9} = \frac{9 - 5}{45} = \frac{4}{45}$$
+
+## 2.24
+
+Compute $E(X)$ and $Var(X)$ for each of the following pdfs:
+
+### (a)
+
+$$f_X(x) = ax^{a - 1} \qquad 0 < x < 1, \qquad a > 0$$
+
+$$E(X) = \int_0^1 xax^{a - 1} dx = a \int_0^1 x^a dx = a \bigg[ \frac{x^{a + 1}}{a + 1} \bigg]_0^1 = \frac{a}{a + 1}$$
+$$E(X^2) = \ldots = \frac{a}{a + 2}$$
+$$Var(X) = E(X^2) - E(X)^2 = \bigg( \frac{a}{a + 2} \bigg) - \bigg( \frac{a}{a + 1} \bigg)^2 = \frac{a(a + 1)^2 - a(a + 2)}{(a + 2)(a + 1)^2}$$
+$$= \frac{a^3 + 2a^2 + a - a^2 - 4a - 4}{(a + 2)(a + 1)^2}$$
