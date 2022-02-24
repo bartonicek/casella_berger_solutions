@@ -1,9 +1,11 @@
 ---
 title: "Soultions to Exercises from Casella & Berger"
 author: "Adam Bartonicek"
-date: "Last updated: `r Sys.Date()`"
-output: html_document
-editor_options: 
+date: 'Last updated: `r Sys.Date()`'
+output:
+  html_document: default
+  pdf_document: default
+editor_options:
   chunk_output_type: console
 ---
 
@@ -308,7 +310,7 @@ $$F_y(y) = P(Y \leq y) = P( \lvert X \lvert \leq y) = P(-y \leq X \leq y)$$
 $$P(X \leq y) - P(X \leq - y) = F_X(y) - F_X(-y)$$
 $$\implies F_Y(y) = \frac{\partial}{\partial y} F_X(y) - F_X(-y) = f_X(y) + f_X(-y) = \frac{1}{\sqrt{2 \pi}}e^{-\frac{y^2}{2}} + \frac{1}{\sqrt{2 \pi}}e^{-\frac{y^2}{2}} = \sqrt{\frac{2}{\pi}} e^{-\frac{y^2}{2}}$$
 
-(there's a typo in the texbook: $\sqrt{\frac{2}{\pi}} e^{-\frac{y}{2}}$ instead of $\sqrt{\frac{2}{\pi}} e^{-\frac{y^2}{2}}$)
+(there's a typo in the texbook solutions: $\sqrt{\frac{2}{\pi}} e^{-\frac{y}{2}}$ instead of $\sqrt{\frac{2}{\pi}} e^{-\frac{y^2}{2}}$)
 
 $$E(Y) = \sqrt{\frac{2}{\pi}} \int_0^{\infty} ye^{-\frac{y^2}{2}} dy$$
 
@@ -547,5 +549,623 @@ $$f_X(x) = ax^{a - 1} \qquad 0 < x < 1, \qquad a > 0$$
 
 $$E(X) = \int_0^1 xax^{a - 1} dx = a \int_0^1 x^a dx = a \bigg[ \frac{x^{a + 1}}{a + 1} \bigg]_0^1 = \frac{a}{a + 1}$$
 $$E(X^2) = \ldots = \frac{a}{a + 2}$$
-$$Var(X) = E(X^2) - E(X)^2 = \bigg( \frac{a}{a + 2} \bigg) - \bigg( \frac{a}{a + 1} \bigg)^2 = \frac{a(a + 1)^2 - a(a + 2)}{(a + 2)(a + 1)^2}$$
-$$= \frac{a^3 + 2a^2 + a - a^2 - 4a - 4}{(a + 2)(a + 1)^2}$$
+$$Var(X) = E(X^2) - E(X)^2 = \bigg( \frac{a}{a + 2} \bigg) - \bigg( \frac{a}{a + 1} \bigg)^2$$
+
+### (b)
+
+$$f_X(x) = \frac{1}{n}, \qquad x = 1, 2, \ldots, \qquad n > 0$$
+
+$$E(X) = \sum_{x = 1}^n \frac{x}{n} = \frac{1}{n} \bigg( \frac{n(n + 1)}{2} \bigg) = \frac{n + 1}{2}$$
+$$E(X^2) = \sum_{x = 1}^n \frac{x^2}{n} = \frac{1}{n} \bigg( \frac{n(n + 1)(2n + 1)}{6} \bigg) = \frac{(n + 1)(2n + 1)}{6}$$
+$$Var(X) = \frac{(n + 1)(2n + 1)}{6} - \bigg( \frac{n + 1}{2} \bigg)^2 = \frac{(n + 1)(2n + 1)}{6} - \frac{(n + 1)^2}{4}$$
+$$= \frac{2(n + 1)(2n + 1) - 3(n + 1)^2}{12}$$
+$$= \frac{(n + 1)[4n + 2 - 3n - 3]}{12}$$
+$$= \frac{n^2 - 1}{12}$$
+
+(there's a typo in the texbook solutions: $\frac{n^2 + 1}{12}$ instead of $\frac{n^2 - 1}{12}$)
+
+### (c)
+
+$$f_X(x) = \frac{3}{2}(x - 1)^2, \qquad 0 < x < 2$$
+$$E(X) = \frac{3}{2} \int_0^2 x(x - 1)^2 dx = \int_0^2 x^3 - 2x^2 = x dx = \frac{3}{2} \bigg[ \frac{x^4}{4} - \frac{2x^3}{3} + \frac{x^2}{2} \bigg]_0^2$$
+$$= \frac{3}{2} \bigg( \frac{16}{4} - \frac{16}{3} + \frac{4}{2} \bigg)$$
+$$= \frac{3}{2} \bigg( \frac{48 - 64 + 24}{12} \bigg) = \frac{3}{2} \cdot \frac{8}{12} = 1$$
+
+$$E(X^2) = \int_0^2 x^4 - 2x^3 + x^2 dx = \frac{3}{2} \bigg[ \frac{x^5}{5} - \frac{2x^4}{4} + \frac{x^3}{3} \bigg]_0^2$$
+$$= \frac{3}{2} \bigg( \frac{32}{5} + \frac{32}{4} + \frac{8}{3} \bigg)$$
+$$= \frac{3}{2} \bigg( -\frac{32}{20} + \frac{8}{3} \bigg)$$
+$$= \frac{3}{2} \bigg(\frac{8}{3} - \frac{8}{5} \bigg)$$
+$$= \frac{3}{2} \bigg( \frac{40 - 24}{15} \bigg) = \frac{3}{2} \cdot \frac{16}{15} = \frac{8}{5}$$
+$$Var(X) = \frac{8}{5} - 1^2 = \frac{3}{5}$$
+
+## 2.25
+
+Suppose the pdf $f_X(x)$ of a random variable $X$ is an even function ($f_X(x) = f_X(-x)$). Show that:
+
+### (a)
+
+$X$ and $-X$ are identically distributed:
+
+Let $Y = -X$, $g^{-1}(y) = -y$. Then:
+
+$$f_Y(y) = f_X(g^{-1}(y)) \Bigg\lvert \frac{\partial x}{\partial y} \Bigg\lvert = f_X(-x) \cdot 1 = f_X(x)$$
+### (b)
+
+$M_X(t)$ is symmetric around zero.
+
+$$M_X(0 + \epsilon) = \int_{-\infty}^\infty e^{(0 + \epsilon)x} f_X(x) dx$$
+$$= \int_{-\infty}^0 e^{\epsilon x} f_X(x) dx + \int_0^\infty e^{\epsilon x} f_X(x) dx$$
+$$= \int_0^\infty e^{-\epsilon x} f_X(-x) dx  + \int_{-\infty}^0 e^{-\epsilon x} f_X(-x) dx $$
+$$= \int_{-\infty}^\infty e^{(0 - \epsilon) x} f_X(-x) dx$$
+$$= M_X(0 - \epsilon)$$
+
+## 2.26
+
+Let $f_X(x)$ be a pdf and let $a$ be a number such that, for all $\epsilon > 0$, $f(a + \epsilon) = f(a - \epsilon)$. Such pdf is said to be symmetric around point $a$.
+
+### (a)
+
+Give three examples of such pdfs:
+
+$\text{Normal}(0, 1)$ is symmetric around $a = 0$, $\text{Normal}(\mu, \sigma^2)$ is symmetric around $a = \mu$, $\text{Uniform}(a, b)$ is symmetric around $a = (a + b)/2$.
+
+### (b)
+
+Show that if $X$ is symmetric around $a$, then $a$ is the median of $X$.
+
+$$\int_a^\infty f_X(x) dx$$
+Let $\epsilon = x - a, \qquad 0 < \epsilon < \infty$. Then:
+
+$$\int_a^\infty f_X(x) dx = \int_0^\infty f_X(a + \epsilon) d \epsilon$$
+$$= \int_0^\infty f_X(a - \epsilon) d \epsilon$$
+$$= \int_{-\infty}^a f_X(x) dx$$
+
+Now:
+
+$$\int_{-\infty}^a f_X(x) dx + \int_a^\infty f_X(x) dx = 1$$
+and:
+
+$$\int_{-\infty}^a f_X(x) dx = \int_a^\infty f_X(x) dx$$
+
+$$\implies \int_{-\infty}^a f_X(x) dx = \int_a^\infty f_X(x) dx = \frac{1}{2}$$
+
+### (c)
+
+Show that if $f_X(x)$ is symmetric and $E(X)$ exists, then $E(X) = a$
+
+$$E(X - a) = \int_{-\infty}^\infty (x - a) f_X(x) dx = \int_{-\infty}^a (x - a) f_X(x) dx + \int_a^{\infty} (x - a) f_X(x)dx$$
+$$= \int_0^\infty - \epsilon f_X(a - \epsilon) d \epsilon + \int_0^\infty \epsilon f_X(a + \epsilon) d \epsilon$$
+$$= \int_0^\infty - \epsilon f_X(a - \epsilon) d \epsilon + \int_0^\infty \epsilon f_X(a - \epsilon) d \epsilon \qquad (f_X(a - \epsilon) \text{ and } f_X(a + \epsilon) \text{ are the same})$$
+$$= 0$$
+
+$$\implies E(X - a) = E(X) - a = 0 \implies E(X) = a$$
+
+### (d)
+
+Show that $f_X(x) = e^{-x}, \qquad x > 0$ is not a symmetric pdf:
+
+$$f_X(a - \epsilon) = e^{-(a - \epsilon)} \neq e^{-(a + \epsilon)} = f_X(a + \epsilon) \qquad \text{for all } a \text{ and } \epsilon > 0$$
+
+### (e)
+
+Show that for the pdf in part (d), the median is less than the mean:
+
+$$F_X(x) = 1 - e^{-x}$$
+$$m = F_X^{-1}(1/2)$$
+$$\implies 1 - e^{-m} = \frac{1}{2}$$
+$$\implies e^{-m} = \frac{1}{2}$$
+$$\implies m = - \log \bigg( \frac{1}{2} \bigg) = \log(2) \approx 0.69$$
+
+$$E(X) = \int_0^\infty xe^{-x} dx = \bigg[ -xe^{-x} \bigg]_0^\infty - \int_0^\infty -e^{-x}  = 0 + \bigg[ -e^{-x} \bigg]_{0}^\infty = (-0 - (-1)) = 1$$
+
+## 2.27
+
+Let $f(x)$ be a pdf and let $a$ be a number such that if $a \geq x \geq y$ then $f(a) \geq f(x) \geq f(y)$ and if $a \leq x \leq y$ then $f(a) \geq f(x) \geq f(y)$. Such pdf is called unimodal with mode equal to $a$.
+
+### (a)
+
+Give example of a unimodal pdf for which the mode is unique:
+
+Standard normal, normal, Cauchy, Gamma, etc...
+
+### (b)
+
+Give example of a unimodal pdf for which the mode is not unique:
+
+Uniform
+
+### (c)
+
+Show that if $f_X(x)$ is both symmetric and unimodal, the point of symmetry is the mode.
+
+Let $a = m + \epsilon$ be some point at distance $\epsilon > 0$ from the mode $m$.
+
+$$f(m) > f(m + \epsilon) \geq f(m + 2 \epsilon)$$
+$$\implies f(a - \epsilon) > f(a) \geq f(a + \epsilon)$$
+$$\implies f(a - \epsilon) > f(a + \epsilon)$$
+$$\implies \text{pdf is NOT symmetric}$$
+Thus, $a$ has to be the mode. 
+
+
+### (d)
+
+Consider the pdf $f_X(x) = e^{-x}, \qquad x > 0$. Show that this pdf is unimodal. What is the mode?
+
+$f(0) > f(x) > f(y)$ for all $0 < x < y$. Thus, $f_X(x)$ is unimodal and 0 is the mode.
+
+## 2.28
+
+Let $\mu_n$ denote the $n$th central moment of a random variable $X$. Two quantities of interest, in addition to mean and variance, are:
+
+$$\alpha_3 = \frac{\mu_3}{(\mu_2)^{3/2}} \qquad \text{and} \qquad \alpha_4 = \frac{\mu_4}{\mu_2^2}$$
+
+$\alpha_3$ is called skewness and $\alpha_4$ is called kurtosis. 
+
+### (a)
+
+Show that if a pdf is symmetric about a point $a$, then skewness $\alpha_3 = 0$.
+
+$$\int_{-\infty}^\infty (x - a)^3 f_X(x) dx = \int_{-\infty}^a (x - a)^3 f_X(x) dx + \int_a^{\infty} (x - a)^3 f_X(x) dx$$
+$$= \int_{-\infty}^0 \epsilon^3 f_X(\epsilon + a) d \epsilon + \int_0^\infty \epsilon^3 f_X(\epsilon + a) d \epsilon$$
+
+$$= \int_0^\infty -\epsilon^3 f_X(-\epsilon + a) d \epsilon + \int_0^\infty \epsilon^3 f_X(\epsilon + a) d \epsilon$$
+$$= \int_0^\infty -\epsilon^3 f_X(\epsilon + a) d \epsilon + \int_0^\infty \epsilon^3 f_X(\epsilon + a) d \epsilon \qquad \text{(since } f_X(a + \epsilon) = f_X(a - \epsilon))$$
+
+$$= 0$$
+
+### (b)
+
+Calculate $\alpha_3$ for $f_X(x) = e^{-x}, \qquad x \geq 0$, a pdf that is skewed to the right.
+
+$$\mu_1 = E(X) = \int_0^\infty xe^{-x} dx = \bigg[ -xe^{-x} \bigg]_0^\infty - \int_0^\infty -e^{-x}  = 0 + \bigg[ -e^{-x} \bigg]_{0}^\infty = (-0 - (-1)) = 1$$
+$$\mu_2 = \int_0^\infty (x - 1)^2 e^{-x} dx = \int_0^\infty x^2 e^{-x} dx - 2 \int_0^\infty xe^{-x} + \int_0^\infty e^{-x} dx$$
+$$= \bigg[ -x^2e^{-x} \bigg]_{0}^\infty -2 \int_{0}^\infty -xe^{-x} dx - 2 + 1$$
+$$= 0 + 2 - 2 + 1 = 1$$
+
+$$\mu_3 = \int_0^\infty (x - 1)^3 e^{-x} dx = \int_0^\infty x^3 e^{-x} dx - 3\int_0^\infty x^2 e^{-x} dx + 3 \int_0^1 xe^{-x} dx - \int_0^\infty e^{-x} dx$$
+$$\Gamma(4) - 3 \Gamma(3) + 3 \Gamma(2) - \Gamma(1)$$
+$$= 6 - 3 \cdot 2 + 3 - 1 = 2$$
+
+$$\alpha_3 = \frac{\mu_3}{(\mu_2)^{3/2}} = \frac{2}{1} = 2$$
+
+### (c)
+
+Calculate $\alpha_4$ for each of the following pdfs and comment on the peakedness of each:
+
+#### i.
+
+$$f_X(x) = \frac{1}{\sqrt{2 \pi}} e^{-x^2 / 2} \qquad - \infty < x < \infty$$
+
+Since the mean $\mu$ is zero, and the second moment $\sigma^2$ is 1, we just need the fourth moment, $E(X^4)$. Let $W = X^2 \implies E(X^4) = E(W^2)$. Then:
+
+$$E(W^2) = Var(W) + E(W)^2$$
+
+$W$ is a Chi-squared distribution with one degree of freedom, so its expectation is 1 and its variance is 2. Thus:
+
+$$\alpha_4 = mu_4 = E(X^4) = E(W^2) = 2 + 1^3 = 3$$
+
+#### ii.
+
+$$f_X(x) = \frac{1}{2}, \qquad -1 < x < 1$$
+$$\mu = E(X) = 0$$
+$$\mu_2 = \frac{1}{2} \int_{-1}^1 x^2 = \frac{1}{2} \bigg[ \frac{x^3}{3} \bigg]_{-1}^1 = \frac{1}{2} \bigg( \frac{1}{3} - \bigg( -\frac{1}{3} \bigg) \bigg) = \frac{1}{3}$$
+$$\mu_4 = \frac{1}{2} \int_{-1}^1 x^4 dx = \frac{1}{2} \bigg[ \frac{x^5}{5} \bigg] = \frac{1}{5}$$
+$$\alpha_4 = \frac{\mu_4}{\mu_2^2} = \frac{\frac{1}{5}}{ \big( \frac{1}{3} \big)^2} = \frac{9}{5}$$
+
+#### iii.
+
+$$f_X(x) = \frac{1}{2}e^{- \lvert x \lvert}, \qquad -\infty < x < \infty$$
+$$\mu = E(X) = 0$$
+$$\mu_2 = \frac{1}{2} \int_{-\infty}^\infty x^2e^{- \lvert x \lvert} dx  = \frac{1}{2} \int_{-\infty}^0 x^2e^x dx + \frac{1}{2} \int_0^\infty x^2e^{-x} dx$$
+$$= \int_0^\infty x^2 e^{-x} dx \qquad \text{(by symmetry)} $$
+$$= \Gamma(3) = 2$$
+$$\mu_4 = \frac{1}{2} \int_{-\infty}^\infty x^4 e^{- \lvert x \lvert} dx  = \Gamma(5) = 24$$
+$$\alpha_4 = \frac{\mu_4}{\mu_2^2} = \frac{24}{2^2} = 6$$
+
+## 2.29
+
+To calculate moments of discrete distributions, it is often easier to work with the factorial moments.
+
+### (a)
+
+Calculate the factorial moment $E[X(X-1)]$ for the Binomial and Poisson distribution.
+
+For Binomial:
+
+$$E[X(X - 1)] = \sum_{x=0}^n x(x-1) {n \choose x} p^x (1 - p)^{n - x}$$
+$$= \sum_{x = 0}^n x(x - 1) \frac{n!}{x! (n - x)!} p^x (1 - p)^{n - x}$$
+$$= n(n - 1)p^2 \sum_{x =0}^n \frac{(n-2)!}{(x - 2)! (n - x)!} p^{x - 2} (1 - p)^{n - x}$$
+$$= n(n-1)p^2$$
+
+For Poisson:
+
+$$E[X(X - 1)] = \sum_{x = 0}^\infty x(x-1) \frac{\lambda^x e^{-\lambda}}{x!}$$
+$$= \lambda^2 \sum_{x = 0}^\infty \frac{\lambda^{x - 2} e^{\lambda}}{(x - 2)!} = \lambda^2$$
+
+### (b)
+
+Use the results from (a) to calculate variances.
+
+For Binomial:
+
+$$Var(X) = E(X^2) - E(X)^2 = E[X(X - 1]) - E(X)^2 + E(X)$$
+$$= n(n-1)p^2 - n^2 p^2 + np$$
+$$= n[(n - 1)p^2 - np^2 + p]$$
+$$= n[p - p^2] = np(1 - p)$$
+For Poisson:
+
+$$Var(X) = \lambda^2 - \lambda^2 + \lambda = \lambda$$
+
+### (c)
+
+A particularly nasty discrete distribution is Beta-Binomial, with pmf:
+
+$$P(Y = y) = a(y + a) \frac{{n \choose y} {a + b - 1 \choose a}}{{n + a + b - 1 \choose y + a}}$$
+Use factorial moments to calculate the variance of Beta-Binomial:
+
+$$E[Y(Y-1)] = \sum_{y = 0}^n y(y - 1) a (y + a) \frac{{n \choose y} {a + b - 1 \choose a}}{{n + a + b - 1 \choose y + a}}$$
+$$= \frac{a^2 n(n-1)}{(y + a)(y - 1 + a)} \sum_{y = 0}^n a(y + a - 2) \frac{{n-2 \choose y-2} {a + b - 1 \choose a}}{{n + a + b - 1 \choose y - 2 + a}} $$
+
+DO SOME OTHER TIME
+
+## 2.30
+
+Find the moment generating functions for the following pdfs:
+
+### (a)
+
+$$f_X(x) = \frac{1}{c}, \qquad 0 < x < c$$
+
+$$M_X(t) = \frac{1}{c} \int_{0}^c e^{tx} dx = \frac{1}{c} \bigg[ \frac{e^{tx}}{t} \bigg]_0^c = \frac{1}{c} \cdot \frac{e^{tc} - 1}{t} = \frac{e^{tc} - 1}{ct}$$
+### (b)
+
+$$f_X(x) = \frac{2x}{c^2}, \qquad 0 < x < c$$
+
+$$M_X(t) = \frac{2}{c^2} \int_{0}^c xe^{tx} dx = \frac{2}{c^2} \Bigg[ \bigg[ xe^{tx} \bigg]_0^c - \int_0^c e^{tx} dx \Bigg]$$
+$$= \frac{2}{c^2} \Bigg[ ce^{tc} - \bigg[ e^{tx} \bigg]_0^c \Bigg]$$
+$$= \frac{2}{c^2} \bigg( ce^{tc} - e^{tc} + 1 \bigg) = \frac{2(ce^{tc} - e^{tc} + 1)}{c^2}$$
+
+### (c)
+
+$$f_X(x) = \frac{1}{2 \beta} e^{- \lvert x - \alpha \lvert / \beta}, \qquad -\infty < x < \infty, \; -\infty < \alpha < \infty, \; \beta > 0$$
+$$M_X(t) = \frac{1}{2 \beta} \int_{-\infty}^\alpha e^{tx} e^{(x - \alpha) / \beta} dx + \frac{1}{2 \beta} \int_\alpha^\infty e^{tx} e^{(\alpha - x) / \beta} dx$$
+$$= \frac{e^{-\alpha/\beta}}{2 \beta} \int_{-\infty}^\alpha e^{ x / \beta + xt} dx + \frac{e^{-\alpha/\beta}}{2 \beta} \int_{\alpha}^\infty e^{-x / \beta + xt} dx$$
+$$= \frac{e^{-\alpha/\beta}}{2 \beta} \bigg[ \frac{e^{x(1 / \beta + t)}}{1/\beta + t} \bigg]_{-\infty}^\alpha + \frac{e^{-\alpha/\beta}}{2 \beta}  \bigg[ \frac{e^{x(-1 / \beta + t)}}{-1/\beta + t} \bigg]_{-\infty}^\alpha$$
+$$= \frac{e^{-\alpha/\beta}}{2 \beta} \cdot \frac{e^{\alpha (1 / \beta + t)}}{1 / \beta + t} - \frac{e^{-\alpha \beta}}{2 \beta} \cdot \frac{e^{\alpha(-1 / \beta + t)}}{1 / \beta - t}$$
+
+### (d)
+
+$$f_X(x) = {r + x - 1 \choose x} p^r ( 1 - p)^x, \qquad x = 0, 1, \ldots, \; 0 < p < 1, \; r > 0$$
+$$M_X(t) = \sum_{x = 0}^\infty e^{tx} {r + x - 1 \choose x} p^r ( 1 - p)^x $$
+$$= p^r \sum_{x = 0}^\infty {r + x - 1 \choose x} [(1 - p)e^t]^x$$
+$$= p^r \cdot \frac{1}{\big(1 - (1 - p)e^t \big)^r} \qquad \text{(normalizing constant for the original pmf)}$$
+$$\bigg( \frac{p}{1 - (1 -p)e^t} \bigg)^r \qquad t < - \log(1 - p)$$
+
+## 2.31
+
+Does a distribution exist for which $M_X(t) = t / (1 - t), \; \lvert t \lvert < 1$. If yes, find it. If no, prove it.
+
+$$M_X(0) = E(e^{0}) = 1$$
+However, $\frac{0}{1 - 0} = 0$, therefore it cannot be an mgf. 
+
+## 2.32
+
+Let $M_X(t)$ be the moment generating function of $X$ and definte $S(t) = \log(M_X(t))$. Show that:
+
+$$\frac{\partial}{\partial t} S(t) \Bigg\lvert_{t = 0} = E(X) \qquad \text{and} \qquad \frac{\partial^2}{\partial t^2} S(t) \Bigg\lvert_{t = 0} = Var(X)$$
+
+$$\frac{\partial}{\partial t} S(t) = \frac{\partial}{\partial t} \log(M_X(t)) = \frac{\frac{\partial}{\partial t} M_X(t)}{M_X(t)} \Bigg\lvert_{t = 0} = \frac{E(X)}{1} = E(X)$$
+$$\frac{\partial^2}{\partial t^2} S(t) = \frac{\partial^2}{\partial t^2} \log(M_X(t)) = \frac{\partial}{\partial t} \frac{\frac{\partial}{\partial t} M_X(t)}{M_X(t)} = \frac{\frac{\partial^2}{\partial t^2} M_X(t) \cdot M_X(t) - \big[ \frac{\partial}{\partial t} M_X(t) \big]^2}{\big[ M_X(t) \big]^2} \Bigg\lvert_{t=0} = \frac{E(X^2) - E(X)^2}{1^2} = Var(X)$$
+
+## 2.33
+
+In each of the following cases verify the expression given for the moment generating function, and in each case use mgf to calculate $E(X)$ and $Var(X)$:
+
+### (a)
+
+$$f_X(x) = \frac{e^{-\lambda} \lambda^x}{x!}, \qquad M_X(t) = e^{\lambda(e^t - 1)}, \qquad x = 0, 1, \ldots \; \lambda >0$$
+$$M_X(t) = \sum_{x = 0}^\infty e^{tx} \frac{e^{-\lambda} \lambda^x}{x!} = e^{-\lambda} \sum_{x = 0}^\infty \frac{(\lambda e^t)^x}{x!} = e^{-\lambda} e^{\lambda e^t} = e^{\lambda(e^t - 1)}$$
+$$E(X) = \frac{\partial}{\partial t} M_X(t) \Bigg \lvert_{t = 0} = e^{\lambda(e^t - 1)}  \lambda e^t \Bigg \lvert_{t = 0} = \lambda$$
+$$E(X) = \frac{\partial^2}{\partial t^2} M_X(t) \Bigg \lvert_{t = 0} = \frac{\partial}{\partial t} \lambda e^{\lambda(e^t - 1) + t}   \Bigg \lvert_{t = 0} = \lambda e^{\lambda(e^t - 1) + t} \lambda e^t +  \lambda e^{\lambda(e^t - 1) + t}   \Bigg \lvert_{t = 0} = \lambda^2 + \lambda$$
+$$Var(X) = \lambda^2 + \lambda - \lambda^2 = \lambda$$
+
+### (b)
+
+$$f_X(x) = p(1-p)^x, \qquad M_X(t) = \frac{p}{1 - (1 - p)e^t}, \qquad x = 0, 1, \ldots, \; 0 < p < 1$$
+$$M_X(t) = \sum_{x = 0}^\infty e^{tx} p(1 - p)^x = p \sum_{x = 0}^\infty [(1 - p)e^t]^x = \frac{p}{1 - (1 - p)e^t} \qquad t < -\log(1 - p)$$
+$$E(X) = \frac{\partial}{\partial t} \frac{p}{1 - (1 - p)e^t} \Bigg \lvert_{t = 0} = p \frac{(1 - p)e^t}{[1 - (1 - p)e^t]^2} \Bigg \lvert_{t = 0} = \frac{p(1- p)}{p^2} = \frac{1 - p}{p}$$
+$$E(X^2) = \frac{\partial}{\partial t} p \frac{(1 - p)e^t}{[1 - (1 - p)e^t]^2} \Bigg \lvert_{t = 0} = p(1 - p) \frac{e^t[1 - (1 - p)e^t]^2 + 2[1 - (1 - p)e^t](1 - p)e^t}{[1 - (1 - p)e^t]^4} \Bigg \lvert_{t = 0}$$
+$$= p(1 - p) \frac{p^2 + 2p(1 - p)}{p^4} = \frac{(1 - p)p + 2(1 - p)^2}{p^2}$$
+$$Var(X) = \frac{(1 - p)p + 2(1 - p)^2}{p^2} - \bigg( \frac{1 - p}{p} \bigg)^2 =  \frac{(1 - p)p + 2(1 - p)^2 - (1 -p^2)}{p^2}$$
+$$= \frac{(1 - p)p + (1 - p)^2}{p^2} = \frac{p - p^2 + 1 -2p + p^2}{p^2} = \frac{1 - p}{p^2}$$
+
+### (c)
+
+$$f_X(x) = \frac{e^{-(x - \mu)^2 / (2 \sigma^2)}}{\sqrt{2 \pi \sigma}}, \qquad M_X(t) = e^{\mu t + \sigma^2 t^2 / 2} \qquad -\infty < \mu < \infty; \sigma > 0$$
+
+$$M_X(t) = \frac{1}{\sqrt{2 \pi} \sigma} \int_{-\infty}^\infty e^{tx} e^{-(x - \mu)^2 / (2 \sigma^2)} dx = \frac{1}{\sqrt{2 \pi} \sigma} \int_{-\infty}^\infty  e^{ -(x^2 - 2 \mu x - 2 \sigma^2 t + \mu^2) / (2 \sigma^2) } dx$$
+
+Complete the square in the exponent:
+
+$$x^2 - 2 \mu x - 2 \sigma^2 t + \mu^2 = x^2 - 2x(\mu + \sigma^2 t) + \mu^2$$
+$$= [x - (\mu  + \sigma^2 t)]^2 - (\mu + \sigma^2 t)^2 + \mu^2$$
+$$= [x - (\mu  + \sigma^2 t)]^2 - [2 \mu \sigma^2 t + (\sigma^2 t)^2]$$
+Going back to the density:
+
+$$\frac{1}{\sqrt{2 \pi} \sigma} \int_{-\infty}^\infty  e^{ -(x^2 - 2 \mu x - 2 \sigma^2 t + \mu^2) / (2 \sigma^2)} dx = \frac{1}{\sqrt{2 \pi} \sigma} \int_{-\infty}^\infty  e^{ -([x - (\mu + \sigma^2 t)]^2 + [2 \mu \sigma^2 t + (\sigma^2 t)^2]) / (2 \sigma^2)} dx$$
+$$= \frac{e^{[2 \mu \sigma^2 t + (\sigma^2 t)^2] / (2 \sigma^2)}}{\sqrt{2 \pi \sigma}} \int_{-\infty}^\infty e^{-[x - (\mu + \sigma^2 t)]^2 / (2 \sigma^2)} dx$$
+$$= e^{\mu t + (\sigma^2 t^2) / 2}$$
+$$E(X) = \frac{\partial}{\partial t} M_X(t) \Bigg \lvert_{t = 0} = \frac{\partial}{\partial t} e^{\mu t + (\sigma^2 t^2) / 2} \Bigg \lvert_{t = 0} =  (\mu + \sigma^2 t) e^{\mu t + (\sigma^2 t^2) / 2} \Bigg \lvert_{t = 0} = \mu$$
+$$E(X^2) = \frac{\partial}{\partial t} \mu + \sigma^2 t(e^{\mu t + (\sigma^2 t^2) / 2}) \Bigg \lvert_{t = 0} = (\mu + \sigma^2 t)^2 e^{\mu t + (\sigma^2 t^2) / 2} + \sigma^2 e^{\mu t + (\sigma^2 t^2) / 2} \Bigg \lvert_{t = 0} = \mu^2 + \sigma^2$$
+$$Var(X) = \sigma^2$$
+
+## 2.34
+
+Let $X$ have the standard normal distribution:
+
+$$f_X(x) = \frac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}}, \qquad -\infty < x < \infty$$
+
+Define a discrete random variable $Y$ scuh that:
+
+$$f_Y(y) = \begin{cases} \frac{1}{6} & \text{if } y = \sqrt{3} \\ \frac{2}{3} & \text{if } y = 0 \\ \frac{1}{6} & \text{if } y = -\sqrt{3} \end{cases}$$
+Show that:
+
+$$E(X^r) = E(Y^r) \qquad \text{for } r = 1, 2, 3, 4, 5$$
+$$E(X) = 0 \qquad E(Y) = \frac{1}{6} \cdot \sqrt{3} + \frac{2}{3} \cdot 0 - \frac{1}{6} \cdot \sqrt{3} = 0$$
+$$E(X^2) = \mu^2 + \sigma^2 = 1 \qquad E(Y) = \frac{1}{6} \cdot \sqrt{3}^2 + \frac{1}{6} \cdot (-\sqrt{3})^2 = 1$$
+$$E(X^3) = \frac{\partial^3}{\partial t^3} e^{t^2 / 2} \Bigg \lvert_{t = 0} = \frac{\partial^2}{\partial t^2} te^{t^2 / 2} \Bigg \lvert_{t = 0} = \frac{\partial}{\partial t} e^{t^2 / 2} + t^2e^{t^2 / 2} \Bigg \lvert_{t = 0} = te^{t^2 / 2} + 2te^{t^2 / 2} + t^3e^{t^2 / 2} \Bigg \lvert_{t = 0} = 0$$
+$$E(Y^3) = \frac{1}{6} \cdot 3^{3/2} - \frac{1}{6} \cdot 3^{3/2} = 0$$
+
+$$E(X^4) = \frac{\partial}{\partial t} te^{t^2 / 2} + 2te^{t^2 / 2} + t^3 e^{t^2 / 2} \Bigg \lvert_{t = 0} = e^{t^2 / 2} + t^2 e^{t^2 / 2} + 2 e^{t^2 / 2} + 2t^2 e^{t^2 / 2} + 3t^2 e^{t^2 / 2} + t^4 e^{t^2 / 2} \Bigg \lvert_{t = 0} = 3$$
+$$E(Y^4) = \frac{1}{6} \cdot 3^2 + \frac{1}{6} \cdot 3^2 = \frac{18}{6} = 3$$
+
+$$E(X^5) = 0 \qquad \text{(there's no terms with } t^1 \text{ in the previous equation)}$$
+$$E(Y^5) = \frac{1}{6} \cdot 3^{\frac{5}{2}} - \frac{1}{6} \cdot 3^{\frac{5}{2}} = 0$$
+## 2.35
+
+Let $X$ have the following distribution:
+
+$$f_X(x) = \frac{1}{\sqrt{2 \pi} x} e^{-[\log(x)]^2 / 2}, \qquad 0 \leq x < \infty$$
+
+### (a)
+
+Show that:
+
+$$E(X^r) = e^{r^2 / 2}$$
+
+$$E(X^r) = \frac{1}{\sqrt{2 \pi}} \int_0^\infty x^{r - 1} e^{-[\log(x)]^2 / 2} dx$$
+$$= \frac{1}{\sqrt{2 \pi}} \int_{0}^\infty (e^z)^{r - 1} e^{-z^2 / 2} e^z dz \qquad \text{(change of variable } z = \log(x))$$
+$$= \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^\infty e^{-(z^2 - 2zr) / 2} dz$$
+$$= \frac{1}{\sqrt{2 \pi }} \int_{-\infty}^\infty e^{- [(z - r)^2 - r^2] / 2} \qquad \text{(complete the square: } z^2 - 2zr = (z - r)^2 - r^2)$$
+$$= \frac{1}{\sqrt{2 \pi}} e^{r^2 / 2} \int_{-\infty}^{\infty} e^{-(z - r)^2 / 2}$$
+$$= e^{r^2 / 2}$$
+### (b)
+
+Now show that:
+
+$$\int_0^\infty x^r \sin[2 \pi \cdot \log(x)] f_X(x)  dx = 0$$
+
+$$\int_0^\infty x^r \sin[2 \pi \cdot \log(x)] f_X(x)  dx = \frac{1}{\sqrt{2 \pi}} \int_0^\infty x^{r - 1} \sin[2 \pi \cdot \log(x)]  e^{-[\log(x)]^2 / 2} dx$$
+$$= \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^\infty e^{zr} \sin[2 \pi \cdot \log (e^z)] e^{-z^2 / 2} dz \qquad \text{(change of variable } z = \log(x))$$
+$$= \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^\infty \sin[2 \pi \cdot z] e^{-(z^2 - 2zr) / 2}$$
+$$= \frac{1}{\sqrt{2 \pi }} \int_{-\infty}^\infty \sin[2 \pi z] e^{-[(z - r)^2 - r^2] / 2}$$
+
+The integrand is an odd function: $$\sin[2 \pi z] e^{-[(z - r)^2 - r^2] / 2} = -\sin[2 \pi z] e^{-[(z - r)^2 - r^2] / 2}$$. As such, the integral will be 0. 
+
+```{r}
+
+r <- 3
+x <- seq(-4 * pi, 4 * pi, 0.01)
+f <- function(x) sin(2 * pi * x) * exp(-((x - r)^2 - r^2)/ 2)
+
+plot(x, f(x), type = 'l', axes = FALSE, 
+     ylab = expression(f[X](x)), col = 'steelblue')
+axis(1, tick = FALSE)
+axis(2, tick = FALSE, las = 1)
+box(bty = 'L')
+
+integrate(f, -4 * pi, 4 * pi)
+
+```
+
+## 2.36
+
+The lognormal distribution has an interesting property. If we have the pdf: 
+
+$$f_X(x) = \frac{1}{\sqrt{2 \pi} x} e^{-[\log(x)]^2 / 2}, \qquad 0 \leq x < \infty$$
+
+Then, as the previous exercise (Exercise 2.35) shows, all moments of the function exists and are finite. However, the distribution does not have a moment generating function. Prove this.
+
+$$M_X(t) = \frac{1}{\sqrt{2 \pi}} \int_0^\infty e^{tx} e^{-[\log(x)]^2 / 2} dx$$
+$$= \frac{1}{\sqrt{2 \pi}} \int_0^\infty e^{-\log(x)^2 /  2 + tx} dx$$
+
+Now:
+
+$$\lim_{x \to \infty} e^{tx - \log(x)^2/2 } = \lim_{x \to \infty} \frac{e^{tx}}{e^{\log(x)^2 / 2}} = \lim_{x \to \infty} \frac{te^{tx}}{e^{\log(x)^2 / 2} \frac{\log(x)}{x}} = \lim_{x \to \infty} \frac{xte^{tx}}{e^{\log(x)^2 / 2} \log(x)} = \infty$$
+
+As such, the integrand will tend to infinity and the integral won't converge, hence mgf does not exist. 
+
+## 2.37
+
+Let:
+
+$$f_X(x) = \frac{1}{\sqrt{2 \pi}} e^{-x^2 / 2} \qquad f_Y(y) = \frac{1}{\sqrt{2 \pi}} e^{-x^2 / 2} \bigg[ 1 + \frac{1}{2} \sin(2 \pi x) \bigg]$$
+
+be pdfs with the following cumulant generating functions:
+
+$$K_X(t) = t^2 / 2 \qquad \text{and} K_Y(t) = K_X(t) + \log \bigg[ 1 + \frac{1}{2}e^{-2 \pi^2 } \sin(2 \pi t) \bigg]$$
+
+### (a)
+
+Plot $f_X(x)$ and $f_Y(y)$ to illustrate their difference:
+
+```{r}
+
+x <- seq(-5, 5, 0.01)
+d1 <- dnorm(x)
+d2 <- dnorm(x) * (1 + 1/2 * sin(2 * pi * x))
+
+plot(x, d2, type = 'l', col = 'firebrick', ylab = 'Density', axes = FALSE)
+lines(x, d1, col = 'steelblue')
+axis(1, tick = FALSE)
+box(bty = 'L', col = 'grey80')
+
+```
+
+### (b)
+
+Plot the cumulant generating functions $K_X$ and $K_Y$ to illustrate their similarity:
+
+```{r}
+
+t <- seq(-5, 5, 0.01)
+
+k1 <- t^2 / 2
+k2 <- t^2 / 2 + log(1 + 1/2 * exp(-2 * pi^2) * sin(2 * pi * t))
+
+plot(x, k1, type = 'l', col = 'firebrick', ylab = '', axes = FALSE)
+lines(x, k2, col = 'steelblue', lty = 'dashed')
+axis(1, tick = FALSE)
+box(bty = 'L', col = 'grey80')
+
+```
+
+### (c)
+
+Calculate moment generating functions of $f_X(x)$ and $f_Y(Y)$. Are they similar or different?
+
+DO SOME OTHER TIME
+
+## 2.38
+
+Let $X$ have a negative binomial distribution with pmf:
+
+$$f_X(x) = {r + x - 1 \choose x} p^r ( 1 - p)^x, \qquad x = 0, 1, \ldots, \; r = 0, 1, \ldots, \; 0 < p < 1$$
+
+### (a)
+
+Calculate the mgf of $X$:
+
+$$M_X(t) = p^r \sum_{x = 0}^\infty e^{tx} {r + x - 1 \choose x}  (1 - p)^x$$
+$$= p^r \sum_{x = 0}^\infty {r + x - 1 \choose x} [(1 - p)e^t]^x$$
+$$= \frac{p^r}{[1 - (1 - p)e^t]^r} = \bigg( \frac{p}{1 - (1 - p)e^t} \bigg)^r$$
+
+### (b)
+
+Define a new random variable $Y = 2 pX$. Show that as $p \to 0$, the mgf of $Y$ converges to that of a Chi-squared random variable with $2r$ degrees if freedom by showin that:
+
+$$\lim_{p \to 0} M_Y(t) = \bigg( \frac{1}{1 - 2t} \bigg)^r, \qquad \lvert t \lvert < \frac{1}{2}$$
+
+$$M_Y(t) = M_X(2pt) = \bigg( \frac{p}{1 - (1 - p)e^{2 pt}} \bigg)^r$$
+
+$$\lim_{p \to 0 } \frac{p}{1 - (1 - p)e^{2 pt}} = \lim_{p \to 0} \frac{1}{1 + pe^{2pt} - 2t(1 - p) e^{2pt}} = \frac{1}{1 - 2t}$$
+
+$$\implies \lim_{p \to 0} M_Y(t) = \bigg( \frac{1}{1 - 2t} \bigg)^r$$
+
+## 2.39
+
+In each of the following cases calculate the indicated derivatives, justifying all operations:
+
+### (a)
+
+$$\frac{\partial}{\partial x} \int_0^x e^{-\lambda t} dt = e^{-\lambda x}$$
+
+Verify:
+
+$$\frac{\partial}{\partial x} \bigg[ \int_0^x e^{-\lambda t} dt \bigg] = \frac{\partial}{\partial x} \bigg[ -\frac{e^{-\lambda t}}{\lambda} \bigg]_0^x = \frac{\partial}{\partial x} \bigg( \frac{1}{\lambda} - \frac{e^{-\lambda x}}{\lambda} \bigg) = e^{-\lambda x}$$
+
+### (b)
+
+$$\frac{\partial}{\partial \lambda} \int_0^\infty e^{-\lambda t} dt =  \int_0^\infty \frac{\partial}{\partial \lambda} e^{-\lambda t} dt = \int_0^\infty -te^{-\lambda t} dt = - \frac{\Gamma(2)}{\lambda^2} = -\frac{1}{\lambda^2}$$
+
+Verify:
+
+$$\frac{\partial}{\partial \lambda} \bigg[ \int_0^\infty e^{-\lambda t} dt \bigg] =  \frac{\partial}{\partial \lambda} \bigg( \frac{1}{\lambda} \bigg) = -\frac{1}{\lambda^2}$$
+
+### (c)
+
+$$\frac{\partial}{\partial t} \int_0^1 \frac{1}{x^2} dx = -\frac{1}{t^2}$$
+
+Verify:
+
+$$\frac{\partial}{\partial t} \bigg[ \int_0^1 \frac{1}{x^2} dx \bigg] = \frac{\partial}{\partial t} \bigg[ -\frac{1}{x} \bigg]_t^1$$
+$$= \frac{\partial}{\partial t} \bigg( \frac{1}{t} - 1  \bigg) = -\frac{1}{t^2}$$
+
+### (d)
+
+$$\frac{\partial}{\partial t} \int_1^\infty \frac{1}{(x - t)^2} dx = \int_1^\infty \frac{\partial}{\partial t} \frac{1}{(x - t)^2} dx = \int_1^\infty -2(x - t)^{-3} dx = \bigg[(x - t)^{-2} \bigg]_{1}^\infty = \frac{1}{(1 - t)^2}$$
+Verify:
+
+$$\frac{\partial}{\partial t} \bigg[ \int_1^\infty \frac{1}{(x - t)^2} dx \bigg] = \frac{\partial}{\partial t} \bigg[ - \frac{1}{x - t} \bigg]_1^\infty = \frac{\partial}{\partial t} \frac{1}{1 - t} = \frac{1}{(1 - t)^2}$$
+
+## 2.40
+
+Prove:
+
+$$\sum_{k=0}^x {n \choose k} p^k (1 - p)^{n - k} = (n - x) {n \choose x} \int_{0}^{1 - p} t^{n - x - 1}(1 - t)^x dx$$
+
+(hint: integrate by parts or differentiate both sides wre to $p$)
+
+DO SOME OTHER TIME
+
+# Chapter 3: Common families of distributions
+
+## 3.1
+
+Find expressions for $E(X)$ and $Var(X)$ if $X$ is a random variable with the general discrete $\text{Uniform}(a, b)$ distribution that puts equal probability on values $a, a + 1, \ldots, +b$.
+
+$$E(X) = \sum_{x=a}^b \frac{x}{b - a + 1} = \frac{1}{b - a + 1} \bigg[ \sum_{x = 1}^b x - \sum_{x = 1}^{a - 1} x \bigg] = \frac{1}{b - a + 1} \cdot \bigg[ \frac{b(b + 1)}{2} - \frac{(a - 1)a}{2} \bigg]$$
+$$= \frac{b^2 + b - a^2 + a}{2(b - a + 1)} = \frac{(b - a + 1)(a + b)}{2 (b - a + 1)} = \frac{a + b}{2}$$
+
+$$E(X^2) = \frac{1}{b - a + 1} \bigg[ \sum_{x = 1}^b x^2 - \sum_{x = 1}^{a - 1} x^2 \bigg] = \frac{1}{b - a + 1} \bigg[ \frac{b(b + 1)(2b + 1)}{6} - \frac{(a-  1)a (2a - 1)}{6} \bigg]$$
+$$= \frac{b(b + 1)(2b + 1) - (a - 1)(a)(2a - 1)}{6(b - a + 1)}$$
+
+$$Var(X) = \frac{b(b + 1)(2b + 1) - (a - 1)(a)(2a - 1)}{6(b - a + 1)} - \bigg( \frac{a + b}{2} \bigg)^2$$
+$$= \frac{b(b + 1)(2b + 1) - (a - 1)(a)(2a - 1) - 3(b - a + 1)(a + b)^2}{6(b - a + 1)}$$
+
+## 3.2
+
+A manufacturer receives a lot of 100 parts from a vendor. The lot will be unacceptable if more than five parts are defective. The manufacturer will randomly select $K$ parts from the lot for inspection and the lot will be accepted if no defective parts are found.
+
+### (a)
+
+How large does $K$ have to be to ensure the probability that the manufacturer accepts an unacceptable lot is less than 0.1?
+
+The smallest probability of discovering a defective part will be when there are exactly 6 defective parts (minimum) in the sample. 
+
+$$P(X = 0 \lvert M = 100, N = 6, K) = \frac{{6 \choose 0} {94 \choose K}}{{100 \choose K}} = \frac{\frac{94!}{K! (94 - K)!}}{\frac{100!}{K!(100 - K)!}} = \prod_{i = 95}^{100} \frac{(i - K)}{i}$$
+
+```{r}
+
+K <- 25:35
+p <- sapply(K, function(x) prod((95:100 - x) / 95:100))
+
+round(rbind(K, p), 3)
+
+```
+
+The manufacturer needs to sample at least 32 parts to keep the probability of accepting an unacceptable lot under 0.1.
+
+### (b)
+
+Suppose the manufacturer decides to accept the lot if there is at most one defective in the sample. How large does $K$ have to be to ensure the probability of accepting an unacceptable lot is less than 0.1?
+
+$$P(X = 0 \text{ or }  1 \lvert M = 100, N = 6, K) = \frac{{6 \choose 0} {94 \choose K}}{{100 \choose K}} + \frac{{6 \choose 1} {94 \choose K - 1}}{{100 \choose K}}$$
+
+```{r}
+
+K <- 50:60
+
+round(rbind(K, dhyper(0, 6, 94, K) + dhyper(1, 6, 94, K)), 3)
+
+```
+
+The manufacturer needs to sample at least 51 parts.
+
+### 3.3
+
+Suppose a pedestrian can cross the street only if there is no car passing during the next 3 seconds. Assume that there is a probability $p$ of a car passing during each second (which we treat as indivisible units here). Find the probability that the pedestrian has to wait exactly 4 seconds before starting to cross.
+
+DO SOME OTHER TIME
+
+
