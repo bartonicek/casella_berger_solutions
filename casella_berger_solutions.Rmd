@@ -1168,4 +1168,569 @@ Suppose a pedestrian can cross the street only if there is no car passing during
 
 DO SOME OTHER TIME
 
+### 3.4 
 
+A man with $n$ keys wants to open his door and tries the keys at random. Exactly one key will open the door. Find the mean number of trials if:
+
+### (a) unsucessfull keys are not eliminated from further selections
+
+Let $p = \frac{1}{n}$:
+
+$$E(X) = \sum_{x=1}^\infty xp(1 - p)^{x - 1}$$
+$$= p \sum_{x = 1}^\infty x(1 -p)^{x - 1}$$
+$$= p \cdot - \frac{\partial}{\partial p} \sum_{x = 1}^\infty (1 -p)^x$$
+$$p \cdot - \frac{\partial}{\partial p} \bigg[ \frac{1}{1 - (1 - p)} - 1 \bigg]$$
+$$= p \cdot - \frac{\partial}{\partial p} \frac{1 - p}{p} = p \cdot \frac{-p - (1 - p)}{p^2} = \frac{1}{p} = n$$
+
+(i.e. expectation of a Geometric variable)
+
+### (b) unsuccesful keys are eliminated
+
+$$P(X = x) = P(X = x \lvert X > x - 1)$$ 
+$$= P(X = x \lvert X > x - 1) \cdot P(X > x - 1 \lvert X > x - 2) \cdot \ldots P(X > 2 \lvert X > 1) \cdot P(X > 1)$$
+$$= \frac{1}{n - (x - 1)} \cdot \bigg(1 - \frac{1}{n - (x - 2)} \bigg) \cdot \bigg( 1 - \frac{1}{n - (x - 3)} \bigg) \cdot \ldots \cdot \bigg( 1 - \frac{1}{n - 1} \bigg) \cdot \bigg(1 - \frac{1}{n} \bigg)$$
+$$= \frac{1}{n - (x - 1)} \cdot \bigg(\frac{n - (x - 1)}{n - (x - 2)} \bigg) \cdot \bigg(\frac{n - (x - 2)}{n - (x - 3)} \bigg) \cdot \ldots \cdot \frac{n-2}{n-1} \cdot \frac{n - 1}{n}$$
+$$= \frac{1}{n}$$
+
+Therefore:
+
+$$E(X) = \sum_{x = 1}^\infty x \cdot \frac{1}{n} = \frac{1}{n} \sum_{x = 1} x = \frac{1}{n} \cdot \frac{n(n + 1)}{2} = \frac{n + 1}{2}$$
+
+### 3.5 
+
+A standard drug is known to be effective in 80% of the cases in which it is used. A new drug is tested on 100 patients and found to be effective in 85 cases. Is the new drug superior? 
+
+(hint: evaluate probability of observing 85 or more successes assuming that the new drug and old drug are equally effective)
+
+$$P(X = 85 \lvert p = 0.8) = \sum_{x = 85}^{100} {100 \choose x} 0.8^{x} (1 - 0.8)^{100 - x} = 0.1285$$
+Would not reject the null under the conventional $\alpha = 0.05$.
+
+## 3.6
+
+We test a commercial insecticide that is advertised to be 99% effective. Let's say we observe 2,000 insects infest a rose-garden, and let $X$ be the number of surviving insects.
+
+### (a)
+
+What probability distribution might provide a reasonable model for this experiment?
+
+Binomial.
+
+### (b)
+
+Write down, but do not evaluate, an expression for the probability that fewer than 100 insects survive, using model in part (a).
+
+$$P(X < 100 \lvert p = 0.99) = \sum_{x = 0}^{100} {2000 \choose x} 0.01^x \cdot 0.99^{2000 - x}$$
+### (c)
+
+Evaluate an approximation to the probability in (b).
+
+We can use the normal distribution to approximate the binomial, since although $p$ is close to 1, $N$ is large. The distribution will have the following parameters:
+
+$$\mu = 0.01 \cdot 2000 = 20 \qquad \sigma^2 = 2000 \cdot 0.01 \cdot 0.99 = 19.8$$
+
+Thus the probability will be:
+
+```{r}
+
+pnorm(100, 20, sqrt(19.8), log = TRUE)
+pbinom(100, 2000, 0.01, log = TRUE)
+
+```
+
+Both models give a very high probability that fewer than 100 insects survive (close to 1).
+
+## 3.7
+
+Let the number of chocolate chips in a certain type of cookie have a Poisson distribution. We want the probability that a randomly chosen cookie has at least two chocolate chips to be greater than 0.99. Find the smallest value of the mean of the distribution that ensures this probability
+
+$$P(X \geq 2) = P(X > 1) = 1 - P(X = 0) - P(X = 1) = 1 - e^{-\lambda} - \lambda e^{-\lambda}$$
+$$1 - e^{-\lambda}(1  + \lambda) = 0.99$$
+$$\implies -e^{-\lambda}(1 + \lambda) = -0.01$$
+$$\implies e^{-\lambda}(1 + \lambda) = 0.01$$
+
+Solve this via Newton-Raphson
+
+```{r}
+
+flam <- function(lam) exp(-lam) * (1 + lam) - 0.01
+dlam <- function(lam) - exp(- lam) * (1 + lam) + exp(- lam)
+
+xold <- Inf
+xnew <- 5
+epsilon <- 1e-05
+
+while(abs(xnew - xold) > epsilon) {
+  
+  xold <- xnew
+  xnew <- xnew - flam(xnew) / dlam(xnew)
+  
+}
+
+xnew
+
+```
+
+## 3.8
+
+Two movie theaters compete for the business of 1,000 customers. Assume that each customer chooses between the movie theaters independently and with "indifference". Let $N$ denote the number of seats in each theater.
+
+### (a)
+
+Using binomial model, find and expression for $N$ that will guarantee that the probability of turning a customer away (because of a full house) is less than 1%.
+
+$$P(X > N) = \sum_{x = N + 1}^{1000} {1000 \choose x} 0.5^x (1 - 0.5)^{1000 - x} = \sum_{x = N + 1}^{1000} {1000 \choose x} 0.5^{1000}$$
+$$\implies 0.5^{1000} \sum_{x = N + 1}^{1000} {1000 \choose x} < 0.01$$
+### (b)
+
+Use normal approximation to get numberical estimate for $N$:
+
+$$\mu = 0.5 \cdot 1,000 = 500 \qquad \sigma^2 = 1,000 \cdot 0.5^2 = 250$$
+$$P(X > N) = P\bigg( \frac{X - 500}{\sqrt{250}} > \frac{N - 500}{\sqrt{250}} \bigg) < 0.01$$
+$$P \bigg( Z > \frac{N - 500}{\sqrt{250}} \bigg) < 0.01$$
+
+```{r}
+
+qnorm(0.99)
+
+```
+
+$$\frac{N - 500}{\sqrt{250}} = 2.326 \implies N = 500 + \sqrt{250} \cdot 2.326 \implies N = 537$$
+
+## 3.9
+
+An elementary school in New York state reported that its incoming kindergarten class contained five sets of twints. This was quoted to be a "statistical impossibility". Was it?
+
+### (a)
+
+The probability of a twin birth is approximately 1/90, and we can assume that elementary school will have approximately 60 children entering kindergarten. Explain how our "statistically impossible" event can be thought of as the probability of 5 or more successes from a $\text{Binomial(60, 1/90)}$.
+
+We can think of the children entering as independent Bernoulli trials, each with a probability 1/90 of being a twin birth.
+
+```{r}
+
+(p <- 1 - pbinom(4, 60, 1/90))
+
+p * 1e6
+1e6 / (p * 1e6)
+
+```
+
+This is fairly rare, but definitely not "one-in-a-million" rare. 
+
+### (b)
+
+Consider this could happen in any school in any county & would've been reported exactly the same. Is this still rare, or something that could be expected to occur?
+
+It can't really be considered unusual within that context, and further even less so if we consider all the different states & times this could've happened.
+
+## 3.10
+
+A Florida police department seized 496 suspected packets of cocaine, of which four were randomly selected and found to actually be cocaine. The police then chose two more packets at random and, posing as drug dealers, sold the packets to the defendent. These last two packets were lsot before they could be tested.
+
+### (a)
+
+If the original 496 packets were composed of $N$ packets of cocaine and $M = 496 - N$ non-cocaine, show that the probability of selecting 4 cocaine packets and then 2 noncocaine packets is:
+
+$$\frac{{N \choose 4} {M \choose 2}}{{N + M \choose N} {N + M - 4 \choose 2}}$$
+We can think of the event as two independent hypergeometric trials: we first draw 4 packets (all cocaine) out of $N + M$ total packets, and then we draw 2 packets (both non-cocaine) out of $N + M - 4$ packets:
+
+$$P(X = 4 \text{ and } Y = 2 \lvert N, M) = \frac{{N \choose 4} {N + M - N \choose 4 - 4}}{{N + M \choose 4}} \cdot  \frac{{M \choose 2} {N + M -4 - M \choose 2 - 2}}{{N + M - 4 \choose 2}} = \frac{{N \choose 4} {M \choose 2}}{{N + M \choose 4} {N + M - 4 \choose 2}}$$
+### (b)
+
+Maximizing the probability in part (a) maximizes the defendants innocence probability. Show that this probability is 0.022 attained at $M = 165$, $N = 331$.
+
+Since the expression involves a lot of nasty factorials I ended up using grid search:
+
+```{r}
+
+lprob <- function(x) {
+  N <- x[1]; M <- x[2]
+  lchoose(N, 4) + lchoose(M, 2) - lchoose(N + M, 4) - lchoose(N + M - 4, 2)
+} 
+
+N <- 4:494
+M <- 496 - N
+
+theta <- cbind(N, M)
+prob <- apply(theta, 1, lprob)
+
+M[which.max(prob)]
+N[which.max(prob)]
+
+```
+
+## 3.14
+
+The hypergeometric distribution can be approximated by either the Binomial or the Poisson distribution. Let $X$ have the hypergeometric distribution:
+
+$$P(X = x \lvert N, M, K) = \frac{{M \choose x} {N - M \choose K - x}}{{N \choose K}}$$
+### (a)
+
+Show that as $N \to \infty, \; M \to \infty, \; M / N \to p$,
+
+$$P(X = x \lvert N, M, K) \to {K \choose x} p^x (1 - p)^{K - x}$$
+
+(hint: Stirling's formula may be helpful)
+
+$$\lim_{N \to \infty, \; M \to \infty, \; M / N \to p} \frac{{M \choose x} {N - M \choose K - x}}{{N \choose K}} = \frac{K!}{x!(K - X)!} \lim_{N \to \infty, \; M \to \infty, \; M / N \to p} \frac{M! (N - M)! (N - K)! }{(M - x)! (N - M - K + x)! N!}$$
+
+Stirling's formula is:
+
+$$n! \approx \sqrt{2 \pi} n^{n + 1/2}e^{-n}$$
+We can replace each of the factorial terms with its Stirling approximation, the $\sqrt{2 \pi}$ terms cancel out, and, since $N \to \infty$ and $M \to \infty$, the $e^{-n}$ terms cancel out as well. So we're left with:
+
+$${K \choose x} \lim_{N \to \infty, \; M \to \infty, \; M / N \to p} \frac{M^{M + 1/2} (N - M)^{N - M + 1/2} (N - K)^{N - K + 1/2} }{(M - x)^{M - x + 1/2} (N - M - K + x)^{N - M - K + x + 1/2} N^{N + 1/2}}$$
+
+We can now break down the limit into simpler terms & evaluate each separately:
+
+$$\lim_{M \to \infty} \bigg( \frac{M}{M - x} \bigg)^M = \lim_{M \to \infty} \frac{1}{\bigg( \frac{M- x}{M} \bigg)^M} = \lim_{M \to \infty} \frac{1}{\bigg(1 - \frac{x}{M} \bigg)^M} = \frac{1}{e^{-x}} = e^{x}$$
+Similarly:
+
+$$\lim_{N \to \infty, M \to \infty} \bigg( \frac{N - M}{N - M - K + x} \bigg)^{N - M} = e^{K - x}$$
+
+And:
+
+$$\lim_{N \to \infty} \bigg( \frac{N - K}{N}^N \bigg) = e^{-K}$$
+
+The product of these three limits is 1: $e^{x} \cdot e^{K - x} \cdot e^{-K } = 1$
+
+Further terms:
+
+$$\lim_{M \to \infty} \bigg( \frac{M}{M - x} \bigg)^{1/2} = 1$$
+$$\lim_{N \to \infty, \; M \to \infty} \bigg( \frac{N - M}{N - M - K + x} \bigg)^{1/2} = 1$$
+$$\lim_{N \to \infty} \bigg( \frac{N - K}{N} \bigg)^{1/2} = 1$$
+
+The last term:
+
+$$\lim_{N \to \infty, M \to \infty, N / M \to p} \frac{(M - x)^x (N - M + K - x)^{K - x}}{(N - K)^K} $$
+$$= \lim_{N \to \infty, M \to \infty, N / M \to p} \bigg( \frac{M - x}{N - K}^x  \bigg)\bigg( \frac{N - M + K - x}{N - K} \bigg)^{K - x}$$
+$$= p^x (1 - p)^{K - x}$$
+
+Thus, finally:
+
+$$P(X = x \lvert N, M, K) \to {K \choose x} p^x ( 1 - p)^{K - x}, \qquad x = 0, 1, \ldots, K$$
+
+### (b)
+
+Use the fact that the Binomial can be approximated by Poisson to show that if $N \to \infty$, $M \to \infty$, $K \to \infty$, $M / N \to 0$, and $KM / N \to \lambda$, then:
+
+$$P(X = x \lvert N, M, K) \to \frac{e^{-\lambda} \lambda^x}{x!} , \qquad x = 0, 1, \ldots$$
+DO SOME OTHER TIME
+
+### (c)
+
+DO SOME OTHER TIME
+
+## 3.12
+
+Suppose $X$ has a $\text{Binomial}(n, p)$ distribution and let $Y$ have a $\text{Negative Binomial}(r, p)$ distribution. Show that $F_X(r - 1) = 1 - Y_X(n - r)$:
+
+$$F_X(r - 1) = P(X \leq r - 1) = P(r\text{th success occurs after } n + 1 \text{ trials or later})$$
+$$= P(\text{at least } n + 1 - r \text{ failures occure before the } r \text{th success})$$
+$$P(Y \geq n + 1 - r)$$
+$$= 1 - P(Y \leq n - r) = 1 - F_Y(n - r)$$
+
+## 3.13
+
+A 0-truncated random variable $X_T$ has pmf:
+
+$$P(X_T = x) = \frac{P(X = x)}{P(X > 0)}, \qquad x = 1, 2, \ldots$$
+
+Find the pmf, mean, and variance of the following 0-truncated random variables:
+
+### (a)
+
+$X \sim \text{Poisson}(\lambda)$
+
+$$P(X > 0) = 1 - P(X = 0) = 1 - e^{-\lambda}$$
+$$f_{X_T}(x) = \frac{\lambda^x e^{-\lambda}}{x! (1 - e^{-\lambda})}$$
+$$E(X_T) = \sum_{x = 1}^\infty x \frac{P(X = x)}{P(X > 0)} = \frac{1}{P(X > 0)}E(X) = \frac{\lambda}{1 - e^{-\lambda}}$$
+$$E(X_T^2) = \sum_{x = 1}^\infty x \frac{P(X = x)}{P(X > 0)} = \frac{1}{P(X > 0)}E(X^2) = \frac{\lambda^2 + \lambda}{1 - e^{-\lambda}}$$
+$$Var(X) = \frac{\lambda^2 + \lambda}{1 - e^{- \lambda}} - \bigg( \frac{\lambda}{1 - e^{-\lambda}} \bigg)^2$$
+
+### (b)
+
+$$X \sim \text{Negative Binomial}(r, p)$$
+
+$$P(X > 0) = 1 - P(X = 0) = 1 - {0 + r - 1 \choose 0} (1 - p)^0 p^r = 1 - p^r$$
+$$E(X_T) = \frac{r(1- p)}{p (1 - p^r)}$$
+$$E(X_T^2) = \frac{r(1 - p) + r^2(1 - p)^2}{p^2(1 - p^r)}$$
+$$Var(X_T) = \frac{r(1 - p) + r^2(1 - p)^2}{p^2(1 - p^r)} - \bigg( \frac{r(1 - p)}{p(1 - p^r)} \bigg)^2$$
+
+## 3.14
+
+Starting from the 0-truncated Negative Binomial, if we let $r \to 0$, we get an interesting distribution, the logarithmic series distribution. A random variable $X$ has a logarithmic series distribution with parameter $p$ if:
+
+$$P(X = x) = \frac{-(1 - p)^x}{x \cdot \log(p)}, \qquad x = 1, 2, \ldots, \qquad 0 < p < 1$$
+
+### (a) Verify that this defines a legitimate probability function
+
+$$\sum_{x = 1}^\infty \frac{-(1 - p)^x}{x \cdot \log(p)} = \frac{1}{\log(p)} \sum_{x = 1}^\infty \frac{-(1 - p)^x}{x} = \frac{1}{\log(p)} \cdot \log(p) = 1 \qquad \text{(Taylor series of } \log(p) )$$
+
+### (b) Find the mean and the variance of $X$.
+
+$$E(X) = \sum_{x = 0}^\infty x \cdot \frac{-(1 - p)^x}{x \cdot \log(p)} = -\frac{1}{\log(p)} \sum_{x = 0}^\infty (1 - p)^x - 1 = -\frac{1}{\log(p)} \cdot \frac{1 - p}{p} = - \frac{1 - p}{p \cdot \log(p)}$$
+$$E(X^2) = \sum_{x = 0}^\infty x^2 \cdot \frac{-(1 - p)^x}{x \cdot \log(p)} = -\frac{1}{\log(p)} \sum_{x = 0}^\infty x \cdot (1 - p)^x - 1 = -\frac{1 - p}{\log(p)} \frac{\partial}{\partial p} \sum_{x = 0}^\infty (1 - p)^{x} - 1 =  -\frac{1 - p}{\log(p)} \frac{\partial}{\partial p} \frac{1 - p}{p}$$
+$$= -\frac{1 - p}{\log(p)} \cdot \frac{-p - (1 - p)}{p^2} = -\frac{1 - p}{p^2 \cdot \log(p)}$$
+$$Var(X) = -\frac{1 - p}{p^2 \cdot \log(p)} - \bigg( -\frac{1 - p}{p \cdot \log(p)} \bigg)^2  = -\frac{\log(p)(1 - p) + (1 - p)^2}{p^2 \cdot \log(p)^2}$$
+
+## 3.15
+
+The $\text{Poisson}(\lambda)$ distribution is the limit of the $\text{Negative Bnomial}(r, p)$ distribution as $r \to \infty$, $p \to 1$, and $r(1 - p) \to \lambda$. Show that under these conditions, the mgf of the Negative Binomial converges to that of the Poisson.
+
+$$M_X(t) = \bigg( \frac{p}{1 - (1 - p)e^t} \bigg)^r$$
+
+Since $r \to \infty$, we want the term in the brackets to have a form of $\bigg(1  + \frac{A}{cr} \bigg)^r$, so that we can apply the limit: $\lim_{n \to \infty} \bigg( 1 + \frac{1}{n} \bigg)^n = e$.
+
+We want $(1 + \frac{A}{1 - (1 - p)e^t}) = \frac{p}{1 - (1 - p)e^t}$. If we focus just on the numerator, we have:
+
+$$A + [1 - (1 - p)e^t] = p$$
+$$\implies A = p - 1 + e^t - pe^t$$
+$$\implies A = (1 - p)(e^t - 1)$$
+
+So:
+
+$$M_X(t) = \bigg( \frac{p}{1 - (1 - p)e^t} \bigg)^r = \bigg(1 + \frac{(1 - p)(e^t - 1)}{1 - (1 - p)e^t} \bigg)^r = \bigg(1 + \frac{r(1 - p)(e^t - 1)}{r[1 - (1 - p)e^t]} \bigg)^r$$
+
+Now, the term:
+
+$$\lim_{r \to \infty, \; p \to 1, \; r(1 -p) \to \lambda} \frac{r(1 - p)(e^t - 1)}{1 - (1 - p)e^t} = \frac{\lambda(e^t - 1)}{1} = \lambda(e^t - 1)$$
+
+And so:
+
+$$\lim_{r \to \infty, \; p \to 1, \; r(1 -p) \to \lambda} M_X(t) = e^{\lambda (e^t - 1)}$$
+Which is the Poisson MGF.
+
+## 3.16
+
+Verify these two identities regarding the gamma function:
+
+### (a)
+
+$$\Gamma(\alpha + 1) = \alpha \Gamma(\alpha)$$
+
+$$\Gamma(\alpha + 1) = \int_0^\infty x^{\alpha + 1 - 1} e^{-x} dx = \int_0^\infty x^\alpha e^{-x}dx$$
+
+Do partial fractions: $u = x^\alpha, \; u' = \alpha x^{\alpha - 1}, \; v = -e^{-x}, \; v' = e^{-x}$:
+
+$$= \bigg[-x^\alpha e^{-x} \bigg]_0^\infty - \alpha \int_0^\infty -x^{\alpha - 1} e^{-x}dx = 0 + \alpha \int_0^\infty x^{\alpha - 1} e^{-x} dx = \alpha \Gamma(\alpha)$$
+
+### (b)
+
+$$\Gamma \bigg(\frac{1}{2} \bigg) = \sqrt{\pi}$$
+$$\Gamma \bigg(\frac{1}{2} \bigg) = \int_0^\infty x^{\frac{1}{2} - 1} e^{-x} dx$$
+$$= \int_0^\infty \frac{\sqrt{2}}{z} e^{-z^2 / 2} z dz \qquad \text{(change of variable} \; z = \sqrt{2x})$$
+$$= \sqrt{2} \int_0^\infty e^{-z^2 / 2} dz = \sqrt{2} \cdot \frac{\sqrt{\pi}}{\sqrt{2}} = \sqrt{\pi}$$
+
+## 3.17
+
+Establish the following formulae: if $X \sim \text{Gamma}(\alpha, \beta)$, then for any positive constant $\nu$:
+
+$$E(X^{\nu}) = \frac{\beta^{\nu} \Gamma(\nu + \alpha)}{\Gamma(\alpha)}$$
+
+$$E(X^{\nu}) = \int_0^\infty x^{\nu} \frac{1}{\Gamma(\alpha) \beta^\alpha} x^{\alpha - 1} e^{-x/\beta} dx$$
+$$= \frac{1}{\Gamma(\alpha) \beta^\alpha} \int_0^\infty x^{\alpha + \nu - 1} e^{-x / \beta} dx$$
+$$= \frac{\Gamma(\alpha + \nu) \beta^{\alpha + \nu}}{\Gamma(\alpha) \beta^\alpha} = \frac{\Gamma(\alpha + \nu) \beta^\nu}{\Gamma(\alpha)}$$
+
+## 3.18 
+
+Let $Y$ be a Negative Binomial random variable. Show that as $p \to 0$, the MGF of the random variable $pY$ converges to that of a Gamma distribution with parameters $r$ and 1.
+
+$$M_{pY}(t) = \bigg( \frac{p}{1 - (1 - p)e^{pt}} \bigg)^r$$
+
+$$\lim_{p \to 0}  \frac{p}{1 - (1 - p)e^{pt}} = \lim_{p \to 0} \frac{1}{e^{pt} - t(1 - p)e^{pt}} = \frac{1}{1 - t}$$
+
+Thus:
+
+$$M_{pY}(t) = (1 - t)^{-r}$$
+
+Which is a MGF of $\text{Gamma}(r, 1)$
+
+## 3.19
+
+Show that:
+
+$$\int_x^\infty \frac{1}{\Gamma(\alpha)} z^{\alpha - 1} e^{-z} dz = \sum_{y = 0}^{\alpha - 1} \frac{x^y e^{-x}}{y!}, \qquad \alpha = 1, 2, 3, \ldots$$
+
+(hint: use integration by parts)
+
+$$\int_x^\infty \frac{1}{\Gamma(\alpha)} z^{\alpha - 1} e^{-z} dz = \frac{1}{(\alpha - 1)!} \bigg[ -z^{\alpha - 1}e^{-z} \bigg]_x^\infty - \frac{1}{(\alpha - 2)!} \int_x^\infty -z^{\alpha - 2} e^{-z} dz = \sum_{y = 0}^{\alpha - 1} \frac{x^y e^{-x}}{y!}$$
+
+Thus, if $X \sim \Gamma(\alpha, 1)$ and $Y \sim \text{Poisson}(x)$, then $P(X \geq x) = P(Y \leq \alpha - 1)$, i.e. the probability that we get $X$ or more failures is the same as the probability that observe less than $\alpha - 1$ occurences.
+
+## 3.20 
+
+Let the random variable $X$ have the pdf:
+
+$$f_X(x) = \frac{2}{\sqrt{2 \pi}} e^{-x^2 / 2}, \qquad 0 < x < \infty$$
+
+### (a)
+
+Find the mean and variance of $X$ (the distribution is called folded normal).
+
+$$E(X) = \frac{2}{\sqrt{2 \pi}} \int_0^\infty xe^{-x^2 / 2} dx = \frac{2}{\sqrt{2 \pi}} \int_0^\infty  \sqrt{2z} e^{-z} \frac{1}{\sqrt{2z}} dz = \frac{2}{\sqrt{2\pi}} \cdot \int_0^\infty e^{-z} dz = \frac{2}{\sqrt{2\pi}}$$
+$$E(X^2) = \frac{2}{\sqrt{2 \pi}} \int_0^\infty x^2e^{-x^2 / 2} dx = \frac{2}{\sqrt{2 \pi}} \int_0^\infty  2z e^{-z} \frac{1}{\sqrt{2z}} dz = \frac{\sqrt{2}}{\sqrt{\pi}} \cdot \int_0^\infty z^{\frac{1}{2}}e^{-z} dz = \frac{\sqrt{2}}{\sqrt{\pi}} \cdot \Gamma \bigg(\frac{1}{2} \bigg) = \sqrt{2}$$
+
+### (b)
+
+If $X$ has the folded normal distribution, find the transformation $g(X) = Y$ and values of $\alpha$ and $\beta$ so that $Y \sim \text{Gamma}(\alpha, \beta)$.
+
+DO SOME OTHER TIME.
+
+## 3.21
+
+Write the integral that would define the mgf of the pdf:
+
+$$f_X(x) = \frac{1}{\pi} \frac{1}{1 + x^2}$$
+$$M_Y(t) = \int_{0}^\infty e^{tx} f_X(x) dx = \int_0^\infty \frac{e^{tx}}{1 + x^2} dx > \int_0^\infty \frac{x}{1 + x^2} dx = \frac{1}{2} \bigg[ \log(1 + x^2) \bigg]_0^\infty = \infty$$
+
+Thus the moment generating function does not exist. This makes sense, since the mean and variance don't exist for Student's t-distribution with $\nu = 1$.
+
+# 3.22
+
+For each of the following distributions, verify the formulas for $E(X)$ and $Var(X)$ given in the text.
+
+### (a)
+
+Verify $Var(X)$ if $X$ has a Poisson distribution. (hint: compute $E[X(X - 1)] = E(X^2) - E(X)$)
+
+$$E(X) = \lambda$$
+$$E[X(X - 1)] = \sum_{x=0}^\infty x(x - 1) \frac{\lambda^x e^{-\lambda}}{x!} = \lambda^2 \sum_{x=2}^\infty  \frac{\lambda^{x - 2} e^{-\lambda}}{(x - 2)!} = \lambda^2$$
+$$Var(X)= E(X^2) - E(X)^2 = \lambda^2 + \lambda - (\lambda)^2 = \lambda$$
+
+### (b)
+
+Verify $Var(X)$ if $X$ has a $\text{Negative Binomial}(r, p)$ distribution.
+
+DO SOME OTHER TIME
+
+### (c)
+
+Verify $Var(X)$ if $X$ has a $\text{Gamma}(\alpha, \beta)$ distribution.
+
+$$E(X) = \int_0^\infty x \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} dx$$
+$$= \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^\infty x^{\alpha + 1 - 1} e^{-\beta x} dx = \frac{\beta^\alpha}{\Gamma(\alpha)} \cdot \frac{\Gamma(\alpha + 1)}{\beta^{\alpha + 1}} = \frac{\alpha}{\beta}$$
+
+
+$$E(X^2) = \int_0^\infty x^2 \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} dx$$
+$$= \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^\infty x^{\alpha + 2 - 1} e^{-\beta x} dx = \frac{\beta^\alpha}{\Gamma(\alpha)} \cdot \frac{\Gamma(\alpha + 2)}{\beta^{\alpha + 2}} = \frac{(\alpha + 1)\alpha}{\beta^2}$$
+$$Var(X) = \frac{(\alpha + 1)\alpha}{\beta^2} - \frac{\alpha^2}{\beta^2} = \frac{\alpha}{\beta^2}$$
+
+### (d)
+
+Verify $E(X)$ and $Var(X)$ if $X$ has a $\text{Beta}(\alpha, \beta)$ distribution.
+
+$$E(X) = \int_0^1 x \cdot \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1} (1 - x)^{\beta - 1} dx$$
+$$= \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \int_0^1 x^{\alpha + 1 - 1} (1 - x)^{\beta - 1} dx = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \cdot \frac{\Gamma(\alpha + 1) \Gamma(\beta)}{\Gamma(\alpha + \beta + 1)} = \frac{\alpha}{\alpha + \beta}$$
+
+$$E(X^2) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \int_0^1 x^{\alpha + 2 - 1} (1 - x)^{\beta - 1} dx = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \cdot \frac{\Gamma(\alpha + 2)\Gamma(\beta)}{\Gamma(\alpha + \beta + 2)} = \frac{(\alpha + 1)\alpha}{(\alpha + \beta + 1)(\alpha + \beta)}$$
+
+$$Var(X) = \frac{(\alpha + 1)\alpha}{(\alpha + \beta + 1)(\alpha + \beta)} - \frac{\alpha^2}{(\alpha + \beta)^2}$$
+$$= \frac{(\alpha + \beta)(\alpha^2 + \alpha) - (\alpha + \beta + 1)\alpha^2}{(\alpha + \beta + 1)(\alpha + \beta)^2}$$
+$$= \frac{\alpha^3 + \alpha^2 + \alpha^2 \beta + \alpha \beta - \alpha^2 -\alpha^2 \beta - \alpha^2}{(\alpha + \beta + 1)(\alpha + \beta)^2}$$
+$$= \frac{\alpha \beta}{(\alpha + \beta + 1)(\alpha + \beta)^2}$$
+
+### (e)
+
+Verify $E(X)$ and $Var(X)$ if $X$ has a $\text{Double Exponential}(\mu, \sigma)$ distribution.
+
+$$E(X) = \int_{-\infty}^\infty x \cdot \frac{1}{2\sigma} e^{-\frac{\lvert x - \mu \lvert}{\sigma}} dx$$
+$$= \frac{1}{2 \sigma} \int_{-\infty}^\infty ue^{-\lvert u \lvert} dx + \mu \qquad \text{(set } u = x- \mu)$$
+$$=\frac{1}{2\sigma} \int_{-\infty}^0 ue^{\frac{ u  }{\sigma}} dx + \frac{1}{2\sigma} \int_{0}^\infty ue^{-\frac{ u}{\sigma}} dx + \mu$$
+$$= -\frac{1}{2\sigma} \int_{0}^\infty ue^{-\frac{u}{\sigma}} du + \frac{1}{2\sigma} \int_{0}^\infty ue^{-\frac{u}{\sigma}} du + \mu \qquad \text{(in the first term, set } u = -u)$$
+$$= \mu \qquad$$
+
+$$E(X^2) = \int_{-\infty}^\infty x^2 \cdot \frac{1}{2\sigma} e^{-\frac{\lvert x - \mu \lvert}{\sigma}} dx$$
+$$= \frac{1}{2\sigma} \int_{-\infty}^\infty u^2 e^{-\frac{\lvert u \lvert }{\sigma}} du + \frac{2\mu}{2\sigma} \int_{-\infty}^\infty ue^{-\frac{\lvert u \lvert}{\sigma}} du + \mu^2 $$
+$$= \frac{1}{2\sigma} \int_{-\infty}^0 u^2 e^{\frac{u}{\sigma}} + \frac{1}{2\sigma} \int_0^\infty u^2 e^{-\frac{u}{\sigma}} + \frac{2\mu}{2\sigma} \cdot 0 + \mu^2$$
+$$= \frac{1}{2\sigma} \int_{0}^\infty (-u)^2 e^{-\frac{u}{\sigma}} du + \frac{1}{2\sigma} \int_0^\infty u^2 e^{-\frac{u}{\sigma}}du + \mu^2$$
+$$= \frac{1}{\sigma} \int_0^\infty u^2 e^{-\frac{u}{\sigma}} du + \mu^2$$
+$$\frac{1}{\sigma} \frac{\Gamma(3) }{\bigg( \frac{1}{\sigma} \bigg)^3} + \mu^2 = 2\sigma^2 + \mu^2 \qquad \text{(recognize the integral above as kernel of Gamma(} 3, \sigma^{-1}))$$
+
+## 3.23
+
+The Pareto distribution with parameters $\alpha$ and $\beta$ has pdf:
+
+$$f_X(x) = \frac{\beta \alpha^\beta}{x^{\beta + 1}}, \qquad \alpha < x < \infty, \; \alpha > 0, \; \beta > 0$$
+### (a)
+
+Verify that $f_X(x)$ is a pdf:
+
+$$\beta \alpha^\beta \int_\alpha^\infty \frac{1}{x^{\beta + 1}} dx = \beta \alpha^\beta \bigg[-\frac{1}{\beta x^\beta} \bigg]_\alpha^\infty = \beta \alpha^\beta \cdot 0 + \beta \alpha^\beta \cdot \frac{1}{\beta \alpha^\beta} = 1$$
+
+### (b)
+
+Derive the mean and variance of this distribution
+
+$$E(X) = \beta \alpha^\beta \int_\alpha^\infty x \cdot \frac{1}{x^{\beta + 1}} dx = \beta \alpha^\beta \int_\alpha^\infty  \frac{1}{x^{\beta}} dx = \beta \alpha^\beta \bigg[-\frac{1}{(\beta - 1) x^{\beta - 1}} \bigg]_\alpha^\infty = \frac{\alpha \beta}{\beta - 1}$$
+
+$$E(X^2) = \beta \alpha^\beta \bigg[- \frac{1}{(\beta - 2)x^{\beta - 2}} \bigg]_\alpha^\infty = \frac{\alpha^2 \beta}{\beta - 2}$$
+$$Var(X) = \frac{\alpha^2 \beta}{\beta - 2} - \frac{\alpha^2 \beta^2}{(\beta - 1)^2}$$
+
+### (c)
+
+Prove that variance does not exist if $\beta \leq 2$
+
+If $\beta \leq 2$, then the integrand $-\frac{1}{(\beta - 2) x^{\beta - 2}}$ will be infinite and so will be integral (of the second moment). 
+
+## 3.24
+
+Many "named" distributions are special cases of the more common distributions already discussed. For each of the following named distributions derive the form of the pdf, verify that it is a pdf, and calculate mean and variance
+
+### (a)
+
+If $X \sim \text{Exponential}(\beta)$, then $Y = X^{\frac{1}{\gamma}}$ has a $\text{Weibull}(\gamma, \beta)$ distribution where $\gamma > 0$ is a constant.
+
+$$y = y(x) = x^{\frac{1}{\gamma}}$$
+$$x = x(y) = y^\gamma$$
+$$\Bigg\lvert \frac{\partial x}{\partial y} \Bigg\lvert = \gamma y^{\gamma - 1}$$
+
+$$f_Y(y) = \frac{1}{\beta} e^{-y^\gamma / \beta} \gamma y^{\gamma - 1} = \frac{\gamma}{\beta}y^{\gamma - 1}e^{-y^\gamma / \beta}$$
+
+$$E(Y^n) = \frac{\gamma}{\beta} \int_0^\infty y^{n + \gamma - 1} e^{-y^\gamma / \beta} dy$$
+$$= \frac{\gamma}{\beta} \int_0^\infty (\beta u)^{(n + \gamma - 1) / \gamma} e^{-u} \frac{1}{\gamma}(\beta u)^{1 / \gamma - 1} \beta du$$
+$$= \int_0^\infty (\beta u)^{(n + \gamma) / \gamma - 1} e^{-u} du = \beta^{n / \gamma} \Gamma \bigg(\frac{n}{\gamma} + 1 \bigg)$$
+
+So:
+
+$$E(Y) = \beta^{1 / \gamma} \Gamma\bigg(\frac{1}{\gamma} + 1 \bigg)$$
+$$E(Y^2) = \beta^{2 / \gamma} \Gamma\bigg(\frac{2}{\gamma} + 1 \bigg)$$
+$$Var(Y) = \beta^{2 / \gamma} \Gamma\bigg(\frac{2}{\gamma} + 1 \bigg) - \beta^{2 / \gamma} \Gamma\bigg(\frac{1}{\gamma} + 1 \bigg)^2 = \beta^{2 / \gamma} \bigg[\Gamma\bigg(\frac{2}{\gamma} + 1 \bigg) - \Gamma\bigg(\frac{1}{\gamma} + 1 \bigg)^2 \bigg]$$
+
+### (b)
+
+If $X \sim \text{Exponential}(\beta)$, then $Y = (2X / \beta)^{1/2}$ has the Rayleigh distribution.
+
+$$y = y(x) = (2X / \beta)^{1/2}$$
+$$x = x(y) = \beta y^2 / 2$$
+$$ \Bigg\lvert \frac{\partial x}{\partial y} \Bigg \lvert = \beta y$$
+
+$$f_Y(y) = \frac{1}{\beta} e^{-(\beta y^2) / 2 \beta} \beta y = ye^{-y^2 / 2}, \qquad y > 0$$
+
+$$\int_0^\infty ye^{-y^2 / 2} dy = \int_0^\infty \sqrt{2u} e^{-u} \frac{1}{\sqrt{2u}} du =  \int_0^\infty e^{-u} du = 1$$
+
+$$E(X) = \int_0^\infty y^2e^{-y^2 / 2} dy = \int_0^\infty 2u e^{-u} \frac{1}{\sqrt{2u}} du = \sqrt{2} \int_0^\infty u^{1/2} e^{-u} du = \sqrt{2} \Gamma\bigg(\frac{3}{2} \bigg) = \frac{\sqrt{2 \pi} }{2}$$
+$$E(X^2) = \int_0^\infty y^3 e^{-y^2 / 2} = \int_0^\infty (2u)^{3/2} e^{-u} (2u)^{-1/2} du = 2 \int_0^\infty u e^{-u} du = 2 \Gamma(2) = 2$$
+$$Var(X) = 2 - \frac{2\pi}{4} = \frac{(4 - \pi)}{2}$$
+
+### (c)
+
+If $X \sim Gamma(\alpha, \beta)$, then $Y = 1 / X$ has the $\text{Inverse-Gamma}(\alpha, \beta)$ distribution. 
+
+$$y = y(x) = 1 / x$$
+$$x = x(y) = 1 / y$$
+$$\Bigg \lvert \frac{\partial x}{\partial y} \Bigg \lvert = \frac{1}{y^2}$$
+
+$$f_Y(y) = \frac{\beta^\alpha}{\Gamma(\alpha)} y^{-\alpha + 1} e^{\frac{\beta}{y}} \cdot y^{-2} = \frac{\beta^\alpha}{\Gamma(\alpha)} y^{-\alpha - 1} e^{\frac{\beta}{y}}, \qquad 0 < y < \infty, \; \alpha > 0, \; \beta > 0$$
+(shape and rate)
+
+Or:
+
+$$f_Y(y) = \frac{1}{\beta^\alpha \Gamma(\alpha)} y^{-\alpha - 1} e^{\frac{1}{\beta y}} \qquad 0 < y < \infty, \; \alpha > 0, \; \beta > 0$$
+(shape and scale)
+
+$$\frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^\infty y^{-\alpha - 1} e^{-\beta / y} dy = \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^\infty (\beta / u)^{-\alpha - 1} e^{-u} \beta u^{-2} du = \frac{\beta^\alpha}{\Gamma(\alpha)} \cdot \beta^{-\alpha} \int_0^\infty u^{\alpha - 1} e^{-u} du = 1$$
+
+$$E(Y) = \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^\infty y^{-\alpha} e^{-\beta / y} dy = \frac{\beta^\alpha}{\Gamma(\alpha)} \cdot \beta^{-\alpha + 1} \int_0^\infty  u^{\alpha} e^{-u} du = \frac{\beta}{\alpha - 1}$$
+$$E(Y^2) = \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^\infty y^{-\alpha + 1} e^{-\beta / y} dy = \frac{\beta^\alpha}{\Gamma(\alpha)} \cdot \beta^{-\alpha + 2} \int_0^\infty  u^{\alpha + 1} e^{-u} du = \frac{\beta^2}{(\alpha - 1)(\alpha - 2)}$$
+$$Var(Y) = \frac{\beta^2}{(\alpha - 1)(\alpha - 2)} - \frac{\beta^2}{(\alpha - 1)^2} = \frac{(\alpha - 1)\beta^2 - (\alpha - 2)\beta^2}{(\alpha-1)^2(\alpha - 2)} = \frac{\beta^2}{(\alpha - 1)^2(\alpha - 2)}$$
